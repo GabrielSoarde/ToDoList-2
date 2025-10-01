@@ -1,0 +1,29 @@
+<div class="header">
+    <h1>Minhas Tarefas (To-Do List)</h1>
+    <button (click)="logout()">Sair</button>
+</div>
+
+<div class="new-task-form">
+    <h3>Adicionar Nova Tarefa</h3>
+    <form>
+        <input type="text" placeholder="O que precisa ser feito?">
+        <button type="submit">Adicionar</button>
+    </form>
+</div>
+
+<div class="task-list">
+    @if (tasks.length === 0) {
+        <p class="empty-message">Nenhuma tarefa encontrada. Comece adicionando uma!</p>
+    } @else {
+        <ul>
+            @for (task of tasks; track task.id) {
+                <li [class.completed]="task.isComplete">
+                    <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateTask(task)">
+                    <span class="task-title">{{ task.title }}</span>
+                    <button class="edit-btn">Editar</button>
+                    <button class="delete-btn" (click)="deleteTask(task.id)">Excluir</button>
+                </li>
+            }
+        </ul>
+    }
+</div>

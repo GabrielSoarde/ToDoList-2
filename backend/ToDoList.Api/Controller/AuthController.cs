@@ -1,0 +1,101 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using ToDoList.Api.Identity;
+using ToDoList.Api.Models;
+using Microsoft.IdentityModel.Tokens; // Para o Token
+using System.IdentityModel.Tokens.Jwt; // Para gerar o token
+using System.Security.Claims; // Para as Claims
+using System.Text; // Para Encoding
+using System.Configuration; // Para IConfiguration (vamos usar IConfiguration para ler a chave)
+
+namespace ToDoList.Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IConfiguration _configuration; // Para ler as configurações do JWT
+
+        public AuthController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _configuration = configuration;
+        }
+
+        // POST: api/Auth/register
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        {
+            // 1. Cria o novo ApplicationUser
+            var user = new ApplicationUser 
+            {
+                UserName = model.Email, // Usamos o Email como Nome de Usuário
+                Email = model.Email
+            };
+
+            // 2. Tenta criar o usuário com a senha fornecida
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Usuário registrado com sucesso!" });
+            }
+
+            // Se houver erros, retorna 400 Bad Request com a lista de erros
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            // 1. Tenta fazer login com a senha
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                // 2. Busca o usuário
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null) return Unauthorized("Erro ao buscar usuário.");
+
+                // 3. Gera o Token JWT
+                var token = await GenerateJwtToken(user);
+
+                // 4. Retorna o token para o Frontend
+                return Ok(new { Token = token, Email = user.Email });
+            }
+
+            return Unauthorized("Login ou senha inválidos.");
+        }
+
+        // Método auxiliar para gerar o token JWT
+        private async Task<string> GenerateJwtToken(ApplicationUser user)
+        {
+            var claims = new List<Claim>
+            {
+                // Claim essencial: o ID do usuário (Identificador principal)
+                new Claim(ClaimTypes.NameIdentifier, user.Id), 
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Name, user.UserName!)
+            };
+
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(7), // Token válido por 7 dias
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
+}

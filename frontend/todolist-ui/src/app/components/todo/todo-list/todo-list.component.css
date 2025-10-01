@@ -1,0 +1,122 @@
+/* src/app/components/todo/todo-list/todo-list.component.css */
+
+.todo-list-page {
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logout-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+.logout-btn:hover {
+    background-color: #5a6268;
+}
+
+/* --- Formulário de Adição --- */
+.new-task-form h3 {
+    color: var(--primary-color);
+}
+
+.new-task-form form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.new-task-form input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+/* --- Lista de Tarefas --- */
+.task-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.task-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bg-light);
+}
+
+.task-list li:last-child {
+    border-bottom: none;
+}
+
+/* Checkbox */
+.task-list input[type="checkbox"] {
+    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Título */
+.task-title {
+    flex-grow: 1;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+/* Estado Completo */
+.task-list li.completed .task-title {
+    text-decoration: line-through;
+    color: var(--secondary-color);
+}
+
+/* Campo de Edição */
+.edit-input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid var(--primary-color);
+    border-radius: 3px;
+    font-size: 18px;
+}
+
+/* Botões de Ação */
+.actions {
+    margin-left: auto;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #343a40;
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.save-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.cancel-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.empty-message {
+    text-align: center;
+    margin-top: 30px;
+    color: var(--secondary-color);
+    font-style: italic;
+}

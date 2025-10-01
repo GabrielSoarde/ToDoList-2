@@ -1,0 +1,10 @@
+# Backend (C# / .NET)
+**/bin/
+**/obj/
+*.user
+*.vs
+
+# Frontend (Angular / Node)
+node_modules/
+dist/
+.angular/

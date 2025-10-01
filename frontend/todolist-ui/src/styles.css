@@ -1,0 +1,60 @@
+/* src/styles.css */
+
+/* Reset básico e Definição de Fonte */
+:root {
+    --primary-color: #007bff; /* Azul */
+    --secondary-color: #6c757d; /* Cinza */
+    --success-color: #28a745; /* Verde */
+    --danger-color: #dc3545; /* Vermelho */
+    --bg-light: #f8f9fa;
+    --border-color: #ccc;
+    --font-family: 'Arial', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-light);
+    color: #343a40;
+}
+
+/* Container principal para centralizar o conteúdo */
+app-root > main {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+h1, h2, h3 {
+    color: #343a40;
+    margin-top: 0;
+}
+
+/* Estilo Básico para Botões */
+button, .btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-left: 10px;
+}
+
+button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: var(--secondary-color);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
