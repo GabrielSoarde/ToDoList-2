@@ -1,34 +1,30 @@
-// src/app/components/todo/todo-list/todo-list.component.ts
-
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Para usar *ngIf, *ngFor, etc.
-import { FormsModule } from '@angular/forms'; // Para os formulários
-import { Router } from '@angular/router'; // Para navegação e logout
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ToDoItem } from '../../../models/todo-item.model';
-import { ToDoService } from '../../../services/todo.service'; // O NOVO SERVIÇO
-import { AuthService } from '../../../services/auth.service'; // Para logout
+import { ToDoService } from '../../../services/todo.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  // Adicionamos os módulos necessários para o template:
   imports: [CommonModule, FormsModule], 
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.css'
+  styleUrls: ['./todo-list.component.css']
 })
 export class ToDoListComponent implements OnInit {
   
-  // Array que armazena as tarefas do usuário
   tasks: ToDoItem[] = [];
-  
-  // Modelo para o formulário de nova tarefa
   newTaskTitle: string = '';
-  
-  // Modelo para a edição
+
   editingTask: ToDoItem | null = null; 
   originalTitle: string = '';
-  
+
+  filter: 'all' | 'pending' | 'completed' = 'all';
+  completedCount: number = 0;
+
   constructor(
     private toDoService: ToDoService,
     private authService: AuthService,
@@ -36,19 +32,18 @@ export class ToDoListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Ao iniciar o componente, carregamos as tarefas
     this.loadTasks();
   }
 
-  // ============== Lógica de Carregamento e CRUD ==============
+  // ================= CRUD =================
 
   loadTasks(): void {
     this.toDoService.getAll().subscribe({
       next: (data) => {
         this.tasks = data;
+        this.updateCompletedCount();
       },
       error: (err) => {
-        // Se a requisição falhar (ex: token expirado), forçamos o logout
         console.error('Erro ao carregar tarefas. Redirecionando para login.', err);
         this.authService.logout();
         this.router.navigate(['/auth']);
@@ -61,55 +56,60 @@ export class ToDoListComponent implements OnInit {
       this.toDoService.add({ title: this.newTaskTitle.trim() }).subscribe({
         next: (createdTask) => {
           this.tasks.push(createdTask);
-          this.newTaskTitle = ''; // Limpa o campo
+          if (createdTask.isComplete) this.completedCount++;
+          this.newTaskTitle = '';
         },
         error: (err) => console.error('Erro ao adicionar tarefa:', err)
       });
     }
   }
 
-  // Usado para marcar/desmarcar o checkbox ou salvar a edição
   updateTask(task: ToDoItem): void {
-    // Cria uma cópia limpa para enviar à API (sem campos de controle de UI)
+    const wasComplete = this.tasks.find(t => t.id === task.id)?.isComplete;
+
     const taskToUpdate: ToDoItem = {
       id: task.id,
       title: task.title,
       isComplete: task.isComplete,
-      createdAt: task.createdAt // O backend usa essa info, mas geralmente não é estritamente necessária aqui
+      createdAt: task.createdAt
     };
 
     this.toDoService.update(taskToUpdate).subscribe({
       next: () => {
-        // Se a edição estava ativa, desativa
+        // Ajusta contador se o status mudou
+        if (wasComplete !== task.isComplete) {
+          this.completedCount += task.isComplete ? 1 : -1;
+        }
         this.editingTask = null;
       },
       error: (err) => {
         console.error('Erro ao atualizar tarefa:', err);
-        // Se a atualização falhar, recarregamos para reverter o estado local
         this.loadTasks(); 
       }
     });
   }
 
   deleteTask(id: number): void {
+    if (!confirm("Tem certeza que deseja excluir esta tarefa?")) return;
+
+    const t = this.tasks.find(t => t.id === id);
     this.toDoService.delete(id).subscribe({
       next: () => {
-        // Remove do array localmente sem precisar recarregar
+        if (t?.isComplete) this.completedCount--;
         this.tasks = this.tasks.filter(t => t.id !== id);
       },
       error: (err) => console.error('Erro ao excluir tarefa:', err)
     });
   }
-  
-  // ============== Lógica de Edição de UI ==============
+
+  // ================= Edição UI =================
 
   startEdit(task: ToDoItem): void {
-    this.editingTask = { ...task }; // Cria uma cópia para edição
-    this.originalTitle = task.title; // Salva o título original
+    this.editingTask = { ...task };
+    this.originalTitle = task.title;
   }
 
   cancelEdit(): void {
-    // Reverte o título da tarefa sendo editada se o usuário cancelar
     if (this.editingTask) {
       const taskIndex = this.tasks.findIndex(t => t.id === this.editingTask!.id);
       if (taskIndex > -1) {
@@ -119,10 +119,24 @@ export class ToDoListComponent implements OnInit {
     }
   }
 
-  // ============== Lógica de Autenticação ==============
+  // ================= Autenticação =================
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth']);
+  }
+
+  // ================= Filtros =================
+
+  get filteredTasks() {
+    if (this.filter === 'completed') return this.tasks.filter(t => t.isComplete);
+    if (this.filter === 'pending') return this.tasks.filter(t => !t.isComplete);
+    return this.tasks;
+  }
+
+  // ================= Helper =================
+
+  private updateCompletedCount() {
+    this.completedCount = this.tasks.filter(t => t.isComplete).length;
   }
 }
