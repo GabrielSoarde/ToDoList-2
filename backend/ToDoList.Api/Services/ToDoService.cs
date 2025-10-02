@@ -37,7 +37,7 @@ namespace ToDoList.Api.Services
         // CREATE
         public async Task<ToDoItem> Add(ToDoItem newItem)
         {
-            newItem.CreatedAt = DateTime.Now;
+            newItem.CreatedAt = DateTime.UtcNow;
             newItem.UserId = _currentUserId;
             
             _context.ToDoItems.Add(newItem);
