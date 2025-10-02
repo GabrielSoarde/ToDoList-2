@@ -1,47 +1,38 @@
-// src/app/components/auth/login-register/login-register.component.ts
-
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Módulo essencial para formulários no Angular
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service'; // Importar o AuthService
+import { AuthService } from '../../../services/auth.service';
 import { LoginModel, RegisterModel } from '../../../models/auth.model';
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [FormsModule], // Adicionar FormsModule
+  imports: [CommonModule, FormsModule],
   templateUrl: './login-register.component.html',
-  styleUrl: './login-register.component.css'
+  styleUrls: ['./login-register.component.css']
 })
 export class LoginRegisterComponent implements OnInit {
-  // Estado para alternar entre as visualizações
-  isLoginMode: boolean = true; 
-  
-  // Modelos de dados do formulário
+  isLoginMode: boolean = true;
+
   loginData: LoginModel = { email: '', password: '' };
   registerData: RegisterModel = { email: '', password: '', confirmPassword: '' };
-  
+
   errorMessage: string = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Se o usuário já estiver logado (tiver um token), redireciona imediatamente
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/tasks']);
     }
   }
 
-  // Alterna o estado do formulário
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
-    this.errorMessage = ''; // Limpa a mensagem ao trocar
+    this.errorMessage = '';
   }
 
-  // Método principal chamado pelo formulário
   onSubmit(): void {
     this.errorMessage = '';
     if (this.isLoginMode) {
@@ -52,20 +43,29 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   private handleLogin(): void {
+    if (!this.isValidEmail(this.loginData.email)) {
+      this.errorMessage = 'E-mail inválido!';
+      return;
+    }
+
     this.authService.login(this.loginData).subscribe({
-      next: (response) => {
-        // Armazena o token e navega para a lista de tarefas
-        this.authService.setToken(response);
+      next: (res) => {
+        this.authService.setToken(res);
         this.router.navigate(['/tasks']);
       },
       error: (err) => {
         this.errorMessage = 'Falha no login. Verifique suas credenciais.';
-        console.error('Erro de Login:', err);
+        console.error(err);
       }
     });
   }
 
   private handleRegister(): void {
+    if (!this.isValidEmail(this.registerData.email)) {
+      this.errorMessage = 'E-mail inválido!';
+      return;
+    }
+
     if (this.registerData.password !== this.registerData.confirmPassword) {
       this.errorMessage = 'As senhas não coincidem!';
       return;
@@ -74,13 +74,18 @@ export class LoginRegisterComponent implements OnInit {
     this.authService.register(this.registerData).subscribe({
       next: () => {
         this.errorMessage = 'Registro realizado com sucesso! Faça login agora.';
-        this.isLoginMode = true; // Volta para o modo Login
+        this.isLoginMode = true;
         this.loginData.email = this.registerData.email;
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Falha no registro. O e-mail já está em uso ou a senha é fraca.';
-        console.error('Erro de Registro:', err);
+        this.errorMessage = err.error?.message || 'Falha no registro. E-mail já em uso ou senha fraca.';
+        console.error(err);
       }
     });
+  }
+
+  private isValidEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   }
 }

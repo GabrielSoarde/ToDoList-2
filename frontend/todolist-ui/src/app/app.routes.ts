@@ -14,13 +14,17 @@ export const routes: Routes = [
         path: 'tasks',
         component: ToDoListComponent,
         title: 'Minhas Tarefas'
-        // Futuramente, adicionaremos um AuthGuard aqui para proteger esta rota
+        // Futuramente, podemos adicionar um AuthGuard aqui para proteger esta rota
     },
     // Redireciona a rota base para a tela de autenticação
     { 
         path: '', 
-        redirectTo: 'tasks', // Podemos iniciar na lista se o usuário já estiver logado
+        redirectTo: 'auth', // Começa no login/registro para usuários não logados
         pathMatch: 'full' 
     },
-    { path: '**', redirectTo: 'tasks' } // Qualquer rota desconhecida
+    // Qualquer rota desconhecida redireciona para o login/registro
+    { 
+        path: '**', 
+        redirectTo: 'auth' 
+    }
 ];
