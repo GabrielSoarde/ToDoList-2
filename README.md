@@ -1,86 +1,130 @@
-# To-Do List App
+# 📝 ToDoList-2
 
-Um aplicativo de lista de tarefas (**To-Do List**) desenvolvido com **Angular 17** no frontend e **.NET 8** no backend, permitindo que os usuários gerenciem suas tarefas de forma prática e responsiva.
+![.NET](https://img.shields.io/badge/.NET-8.0-green) ![Angular](https://img.shields.io/badge/Angular-17-red) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
----
-
-## 🖥️ Tecnologias Utilizadas
-
-**Frontend**
-- Angular 17  
-- TypeScript  
-- HTML5 & CSS3  
-
-**Backend**
-- .NET 8  
-- C#  
-- ASP.NET Core Web API  
+**ToDoList-2** é uma aplicação moderna de lista de tarefas com **frontend em Angular 17** e **backend em .NET 8**, utilizando **PostgreSQL**. Permite criar, listar, editar, remover e marcar tarefas como concluídas, com autenticação JWT.
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Tecnologias
 
-- Listar, adicionar, editar e remover tarefas  
-- Marcar tarefas como concluídas  
-- Autenticação básica com botão de **logout**  
-- Interface responsiva e estilizada  
-- Integração frontend-backend via API REST  
+- **Frontend:** Angular 17, TypeScript, HTML5, CSS3  
+- **Backend:** .NET 8, C#, ASP.NET Core Web API  
+- **Banco de Dados:** PostgreSQL  
+- **Autenticação:** JWT (JSON Web Token)
+
+---
+
+## ✅ Funcionalidades
+
+| Funcionalidade                  | Status |
+|---------------------------------|--------|
+| Criar tarefas                    | ✅     |
+| Listar tarefas                   | ✅     |
+| Editar tarefas                   | ✅     |
+| Remover tarefas                  | ✅     |
+| Marcar tarefas como concluídas   | ✅     |
+| Autenticação e logout            | ✅     |
+| Interface responsiva             | ✅     |
+| Integração completa via API REST | ✅     |
 
 ---
 
 ## 📂 Estrutura do Projeto
 
 ```
-ToDoListApp/
-├── backend/
-│   └── ToDoList.Api/           # API em .NET 8
-├── frontend/
-│   └── todolist-ui/            # Frontend em Angular 17
+ToDoList-2/
+├── backend/             # API em .NET 8
+│   └── ToDoList.Api/
+├── frontend/            # Frontend em Angular 17
+│   └── todolist-ui/
+├── .gitignore
 └── README.md
 ```
 
 ---
 
-## ⚙️ Como Rodar o Projeto
+## ⚙️ Pré-requisitos
 
-### Backend (.NET 8)
-1. Abra o terminal na pasta `backend/ToDoList.Api`
-2. Execute:
-   ```bash
-   dotnet restore
-   dotnet run
-   ```
-3. A API estará disponível em `https://localhost:5001` (ou porta configurada)
-
-### Frontend (Angular 17)
-1. Abra o terminal na pasta `frontend/todolist-ui`
-2. Instale dependências:
-   ```bash
-   npm install
-   ```
-3. Execute o projeto:
-   ```bash
-   ng serve
-   ```
-4. Acesse `http://localhost:4200`
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)  
+- [Node.js e npm](https://nodejs.org/)  
+- [Angular CLI](https://angular.io/cli)  
+- [PostgreSQL](https://www.postgresql.org/)
 
 ---
 
-## 🔐 Logout
+## 💻 Backend
 
-No canto superior direito da aplicação, há um botão **Sair** que encerra a sessão do usuário.
+### 1. Configuração do PostgreSQL
+- Crie um banco chamado `todolist_db`  
+- Atualize `appsettings.json` se necessário:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Port=5432;Database=todolist_db;Username=postgres;Password=admin123"
+}
+```
+
+### 2. Rodando o backend
+```bash
+cd backend/ToDoList.Api/
+dotnet restore
+dotnet ef database update
+dotnet run
+```
+
+> O backend rodará geralmente em `https://localhost:5001`.
 
 ---
 
-## 📌 Observações
+## 💻 Frontend
 
-- A aplicação ainda pode ser expandida com autenticação completa, persistência de dados em banco SQL, e filtros por status de tarefa.
-- Todo o layout é **responsivo** e funciona bem em desktops e dispositivos móveis.
+### 1. Instale dependências
+```bash
+cd frontend/todolist-ui/
+npm install
+```
+
+### 2. Execute o frontend
+```bash
+ng serve
+```
+
+- Abra o navegador: `http://localhost:4200`  
+- O frontend se conecta automaticamente ao backend via API REST
 
 ---
 
-## 📝 Autor
+## 🔑 Testando a API com JWT
 
-**Gabriel**  
-Desenvolvedor Fullstack iniciante, estudando Angular e .NET 8.
+Use o JWT retornado ao fazer login para acessar endpoints protegidos:
+
+```
+GET https://localhost:5001/api/todo
+Header:
+Authorization: Bearer <seu_token_jwt>
+```
+
+---
+
+## 🌟 Melhorias Futuras
+
+- Autenticação com roles e permissões  
+- Filtros e busca de tarefas  
+- Preferências do usuário (tema, ordenação)  
+- Testes unitários e de integração
+
+---
+
+## 📄 Licença
+
+MIT License – uso pessoal ou educacional.
+
+---
+
+## 🔗 Links Úteis
+
+- [Angular](https://angular.io/)  
+- [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
+- [PostgreSQL](https://www.postgresql.org/)
 
