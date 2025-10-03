@@ -50,6 +50,7 @@ namespace ToDoList.Api.Controllers
             var item = new ToDoItem
             {
                 Title = dto.Title,
+                Description = dto.Description,
                 DueDate = dto.DueDate,
                 Priority = dto.Priority,
                 Category = dto.Category,
@@ -62,6 +63,7 @@ namespace ToDoList.Api.Controllers
             {
                 Id = createdItem.Id,
                 Title = createdItem.Title,
+                Description = createdItem.Description,
                 IsComplete = createdItem.IsComplete,
                 CreatedAt = createdItem.CreatedAt,
                 DueDate = createdItem.DueDate,
@@ -72,18 +74,27 @@ namespace ToDoList.Api.Controllers
 
         // PUT: api/ToDoItems/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutToDoItem(int id, ToDoItem toDoItem) // Corrigido
+        public async Task<IActionResult> PutToDoItem(int id, UpdateToDoItemDto dto)
         {
-            if (id != toDoItem.Id)
-            {
-                return BadRequest();
-            }
-
-            // Chamada assíncrona com await
-            if (!await _toDoService.Update(toDoItem)) 
-            {
+            var existingItem = await _toDoService.GetById(id);
+            if (existingItem == null)
                 return NotFound();
-            }
+
+            // Atualiza os campos editáveis
+            if (!string.IsNullOrWhiteSpace(dto.Title))
+                existingItem.Title = dto.Title;
+
+            if (dto.IsComplete.HasValue)
+                existingItem.IsComplete = dto.IsComplete.Value;
+
+            existingItem.DueDate = dto.DueDate;
+            existingItem.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingItem.Priority : dto.Priority;
+            existingItem.Category = string.IsNullOrWhiteSpace(dto.Category) ? existingItem.Category : dto.Category;
+
+            var updated = await _toDoService.Update(existingItem);
+
+            if (!updated)
+                return BadRequest();
 
             return NoContent();
         }
@@ -92,7 +103,7 @@ namespace ToDoList.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteToDoItem(int id) // Corrigido
         {
-            // Chamada assíncrona com await
+
             if (!await _toDoService.Delete(id))
             {
                 return NotFound();

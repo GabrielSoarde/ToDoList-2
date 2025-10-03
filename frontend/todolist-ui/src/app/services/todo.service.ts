@@ -25,24 +25,29 @@ export class ToDoService {
    * POST: /api/ToDoItems
    * Adiciona uma nova tarefa.
    */
-  add(item: { title: string }): Observable<ToDoItem> {
-    // Nota: A API adiciona o UserId, CreatedAt e o ID.
-    // Enviamos apenas o Título (e IsComplete, se necessário, mas geralmente é falso por padrão).
-    const newItem: Partial<ToDoItem> = {
-      title: item.title,
-      isComplete: false
-    };
-    return this.http.post<ToDoItem>(this.apiUrl, newItem);
-  }
+  add(item: { 
+  title: string;
+  description?: string;
+  dueDate?: string | null;     // <-- string, não Date
+  priority?: string | null;
+  category?: string | null;
+  isComplete?: boolean;
+}): Observable<ToDoItem> {
+  return this.http.post<ToDoItem>(this.apiUrl, item);
+}
 
-  /**
-   * PUT: /api/ToDoItems/{id}
-   * Atualiza uma tarefa existente (usado para alternar o status ou editar o título).
-   */
-  update(item: ToDoItem): Observable<void> {
-    // O backend espera o item completo para verificar a propriedade
-    return this.http.put<void>(`${this.apiUrl}/${item.id}`, item);
+update(
+  id: number,
+  item: { 
+    title: string; 
+    dueDate?: string | null;   // <-- string, não Date
+    priority?: string; 
+    category?: string;
+    isComplete?: boolean;
   }
+): Observable<void> {
+  return this.http.put<void>(`${this.apiUrl}/${id}`, item);
+}
 
   /**
    * DELETE: /api/ToDoItems/{id}

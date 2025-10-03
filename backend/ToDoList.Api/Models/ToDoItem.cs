@@ -8,14 +8,15 @@
         public string UserId { get; set; } 
 
         public string Title { get; set; }
+        public string? Description { get; set; }
         public bool IsComplete { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // ================================
         // 🚀 NOVOS CAMPOS V1.2
         // ================================
         
-        public DateTime? DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
         
         public string? Priority { get; set; }
         

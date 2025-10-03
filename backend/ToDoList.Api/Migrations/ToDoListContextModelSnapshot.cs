@@ -232,8 +232,11 @@ namespace ToDoList.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("DueDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("boolean");

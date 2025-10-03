@@ -7,7 +7,7 @@
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ===== Cabeçalho ===== */
@@ -130,15 +130,6 @@
   margin: 0;
 }
 
-.task-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 10px;
-  border-bottom: 1px solid #eee;
-  transition: background 0.2s;
-}
-
 .task-list li:last-child {
   border-bottom: none;
 }
@@ -177,8 +168,9 @@ small {
 
 /* ===== Botões de Ação ===== */
 .actions {
-  display: flex;
-  gap: 5px;
+    display: flex;
+    gap: 5px;
+    margin-left: auto;
 }
 
 .actions button {
@@ -199,6 +191,7 @@ small {
 .edit-btn {
   background-color: #ffc107;
   color: #343a40;
+  padding: 10px;
 }
 
 /* Excluir */
@@ -220,12 +213,32 @@ small {
 }
 
 /* ===== Input de Edição ===== */
-.edit-input {
-  flex-grow: 1;
-  padding: 8px;
-  border: 1px solid #6c63ff;
-  border-radius: 5px;
-  font-size: 15px;
+.edit-task {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-task input,
+.edit-task select,
+.edit-task textarea {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  flex: 1;
+  min-width: 140px;
+}
+
+.edit-task textarea {
+  flex-basis: 100%;
+  width: 100%;
+  height: 90px;
+  resize: none;
+  line-height: 1.5;
 }
 
 /* ===== Mensagem Vazia ===== */
@@ -250,4 +263,37 @@ small {
   line-height: 1.5;
   box-sizing: border-box;
 }
+
+/* Alinhamento da task-content para mostrar metadados abaixo do título */
+.task-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Pequeno espaçamento entre os metadados */
+.task-metadata small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 10px;
+  font-size: 13px;
+  color: #444; /* mais escuro que o #666 */
+}
+
+.task-metadata small::before {
+  font-size: 14px;
+}
+
+/* Checkbox e ações alinhadas melhor */
+.task-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee; /* separador opcional */
+  margin-bottom: 10px; /* 🔹 resolve o "colado" */
+  border-radius: 6px;
+}
+
 

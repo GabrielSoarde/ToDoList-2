@@ -10,8 +10,8 @@ import { JwtInterceptor } from './app/interceptors/jwt-interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes), // <-- aqui você conecta suas rotas
     provideHttpClient(withInterceptors([JwtInterceptor])),
-    importProvidersFrom(FormsModule) // 🔥 aqui habilita o ngModel
+    importProvidersFrom(FormsModule) // habilita [(ngModel)]
   ]
 }).catch(err => console.error(err));

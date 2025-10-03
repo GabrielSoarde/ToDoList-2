@@ -23,9 +23,9 @@ export class LoginRegisterComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/tasks']);
-    }
+    // Limpa tokens antigos (importante ao recriar o banco)
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_email');
   }
 
   toggleMode(): void {

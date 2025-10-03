@@ -32,12 +32,12 @@
 
     <input #taskDueDate type="date" />
     <select #taskPriority>
-      <option>Alta</option>
-      <option>Média</option>
-      <option>Baixa</option>
+      <option [ngValue]="'Alta'">Alta</option>
+      <option [ngValue]="'Média'">Média</option>
+      <option [ngValue]="'Baixa'">Baixa</option>
     </select>
     <select #taskCategory>
-      <option *ngFor="let cat of categories">{{cat}}</option>
+      <option *ngFor="let cat of categories">{{ cat }}</option>
     </select>
 
     <button (click)="addTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskPriority.value, taskCategory.value)">
@@ -45,42 +45,54 @@
     </button>
   </div>
 
-  <!-- Lista -->
-  <div class="task-list">
-    <ul>
-      <li *ngFor="let task of filteredTasks" 
-          [class.completed]="task.isComplete" 
-          [class.editing]="editingTask?.id === task.id">
+  <!-- Lista de tarefas -->
+<div class="task-list">
+  <ul>
+    <li *ngFor="let task of filteredTasks" 
+        [class.completed]="task.isComplete"
+        [class.editing]="editingTask?.id === task.id">
 
-        <!-- Checkbox -->
-        <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateTask(task)">
+      <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateTask(task)">
 
-        <!-- Se editando -->
-        <ng-container *ngIf="editingTask?.id === task.id; else showTask">
-          <input type="text" [(ngModel)]="task.title" class="edit-input">
-          <button class="save-btn" (click)="updateTask(task)">Salvar</button>
-          <button class="cancel-btn" (click)="cancelEdit()">Cancelar</button>
-        </ng-container>
+      <div class="task-content" *ngIf="editingTask?.id !== task.id">
+        <span class="task-title">{{ task.title }}</span>
 
-        <!-- Mostrar -->
-        <ng-template #showTask>
-          <span class="task-title">{{ task.title }}</span>
-          <small *ngIf="task.description">📝 {{ task.description }}</small>
-          <small *ngIf="task.dueDate">📅 {{ task.dueDate | date:'dd/MM/yyyy' }}</small>
-          <small *ngIf="task.priority">⚡ {{ task.priority }}</small>
-          <small *ngIf="task.category">📂 {{ task.category }}</small>
+        <div class="task-metadata">
+          <small *ngIf="task.description"><span>📝</span> {{ task.description }}</small>
+          <small *ngIf="task.dueDate"><span>📅</span> {{ task.dueDate | date:'dd/MM/yyyy' }}</small>
+          <small *ngIf="task.priority"><span>⚡</span> {{ task.priority }}</small>
+          <small *ngIf="task.category"><span>📂</span> {{ task.category }}</small>
+        </div>
+      </div>
+
+      <div class="actions" *ngIf="editingTask?.id !== task.id"> 
+      <button (click)="startEdit(task)" class="edit-btn">Editar</button>
+        <button (click)="deleteTask(task.id)" class="delete-btn">Excluir</button>
+      </div>
+
+      <!-- Edição -->
+      <ng-container *ngIf="editingTask?.id === task.id">
+        <div class="edit-task">
+          <input type="text" [(ngModel)]="task.title" placeholder="Título da tarefa">
+          <textarea [(ngModel)]="task.description" placeholder="Descrição da tarefa"></textarea>
+          <input type="date" [(ngModel)]="task.dueDate">
+          <select [(ngModel)]="task.priority">
+            <option>Alta</option>
+            <option>Média</option>
+            <option>Baixa</option>
+          </select>
+          <select [(ngModel)]="task.category">
+            <option *ngFor="let cat of categories">{{ cat }}</option>
+          </select>
 
           <div class="actions">
-            <button class="edit-btn" (click)="startEdit(task)">Editar</button>
-            <button class="delete-btn" (click)="deleteTask(task.id)">Excluir</button>
+            <button (click)="updateTask(task)" class="save-btn">Salvar</button>
+            <button (click)="cancelEdit()" class="cancel-btn">Cancelar</button>
           </div>
-        </ng-template>
-      </li>
-    </ul>
+        </div>
+      </ng-container>
 
-    <!-- Sem tarefas -->
-    <p *ngIf="filteredTasks.length === 0" class="empty-message">
-      Nenhuma tarefa encontrada. Comece adicionando uma!
-    </p>
-  </div>
+    </li>
+  </ul>
+  <p *ngIf="filteredTasks.length === 0" class="empty-message">Nenhuma tarefa encontrada. Comece adicionando uma!</p>
 </div>

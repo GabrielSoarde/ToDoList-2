@@ -12,8 +12,8 @@ using ToDoList.Api.Data;
 namespace ToDoList.Api.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    [Migration("20251001221703_AddIdentityTables")]
-    partial class AddIdentityTables
+    [Migration("20251003220200_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -229,16 +229,30 @@ namespace ToDoList.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Category")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("DueDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Priority")
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

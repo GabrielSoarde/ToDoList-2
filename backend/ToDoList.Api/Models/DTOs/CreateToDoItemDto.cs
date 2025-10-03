@@ -2,11 +2,11 @@
 {
     public class CreateToDoItemDto
     {
-        public string Title { get; set; } = string.Empty;
-
-        // Campos extras da versão 1.2
-        public DateTime? DueDate { get; set; }
-        public string? Priority { get; set; } // Alta, Média, Baixa
+        public string Title { get; set; }
+        
+        public string? Description { get; set; }
+        public DateOnly? DueDate { get; set; }
+        public string? Priority { get; set; }
         public string? Category { get; set; }
     }
 }
