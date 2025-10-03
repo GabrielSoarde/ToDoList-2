@@ -1,142 +1,103 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
-import { ToDoItem } from '../../../models/todo-item.model';
-import { ToDoService } from '../../../services/todo.service';
-import { AuthService } from '../../../services/auth.service';
+interface Task {
+  id: number;
+  title: string;
+  description?: string;
+  isComplete: boolean;
+  dueDate?: Date;
+  priority?: 'Alta' | 'Média' | 'Baixa';
+  category?: string;
+}
 
 @Component({
   selector: 'app-todo-list',
-  standalone: true,
-  imports: [CommonModule, FormsModule], 
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css']
+  styleUrls: ['./todo-list.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,   // habilita *ngIf, *ngFor
+    FormsModule,    // habilita [(ngModel)]
+    DatePipe        // habilita o | date
+  ]
 })
-export class ToDoListComponent implements OnInit {
-  
-  tasks: ToDoItem[] = [];
-  newTaskTitle: string = '';
+export class ToDoListComponent {
+  tasks: Task[] = [];
+  editingTask: Task | null = null;
 
-  editingTask: ToDoItem | null = null; 
-  originalTitle: string = '';
-
+  // Filtros e busca
   filter: 'all' | 'pending' | 'completed' = 'all';
-  completedCount: number = 0;
+  searchTerm: string = '';
+  selectedCategory: string = 'Todas';
 
-  constructor(
-    private toDoService: ToDoService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  // Categorias
+  categories: string[] = ['Trabalho', 'Pessoal', 'Estudos'];
 
-  ngOnInit(): void {
-    this.loadTasks();
+  // Contador de concluídas
+  get completedCount(): number {
+    return this.tasks.filter(t => t.isComplete).length;
   }
 
-  // ================= CRUD =================
-
-  loadTasks(): void {
-    this.toDoService.getAll().subscribe({
-      next: (data) => {
-        this.tasks = data;
-        this.updateCompletedCount();
-      },
-      error: (err) => {
-        console.error('Erro ao carregar tarefas. Redirecionando para login.', err);
-        this.authService.logout();
-        this.router.navigate(['/auth']);
-      }
+  // Lista filtrada
+  get filteredTasks(): Task[] {
+    return this.tasks.filter(task => {
+      if (this.filter === 'completed' && !task.isComplete) return false;
+      if (this.filter === 'pending' && task.isComplete) return false;
+      if (this.searchTerm && !task.title.toLowerCase().includes(this.searchTerm.toLowerCase())) return false;
+      if (this.selectedCategory !== 'Todas' && task.category !== this.selectedCategory) return false;
+      return true;
     });
   }
 
-  addTask(): void {
-    if (this.newTaskTitle.trim()) {
-      this.toDoService.add({ title: this.newTaskTitle.trim() }).subscribe({
-        next: (createdTask) => {
-          this.tasks.push(createdTask);
-          if (createdTask.isComplete) this.completedCount++;
-          this.newTaskTitle = '';
-        },
-        error: (err) => console.error('Erro ao adicionar tarefa:', err)
-      });
-    }
-  }
+  // Adicionar tarefa
+  addTask(
+    title: string,
+    description?: string,
+    dueDate?: string | null,
+    priority?: string,
+    category?: string
+  ): void {
+    if (!title.trim()) return;
 
-  updateTask(task: ToDoItem): void {
-    const wasComplete = this.tasks.find(t => t.id === task.id)?.isComplete;
-
-    const taskToUpdate: ToDoItem = {
-      id: task.id,
-      title: task.title,
-      isComplete: task.isComplete,
-      createdAt: task.createdAt
+    const newTask: Task = {
+      id: Date.now(),
+      title,
+      description,
+      isComplete: false,
+      dueDate: dueDate ? new Date(dueDate) : undefined, // converte string -> Date
+      priority: priority as 'Alta' | 'Média' | 'Baixa',
+      category: category || 'Pessoal'
     };
 
-    this.toDoService.update(taskToUpdate).subscribe({
-      next: () => {
-        // Ajusta contador se o status mudou
-        if (wasComplete !== task.isComplete) {
-          this.completedCount += task.isComplete ? 1 : -1;
-        }
-        this.editingTask = null;
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar tarefa:', err);
-        this.loadTasks(); 
-      }
-    });
+    this.tasks.push(newTask);
   }
 
-  deleteTask(id: number): void {
-    if (!confirm("Tem certeza que deseja excluir esta tarefa?")) return;
-
-    const t = this.tasks.find(t => t.id === id);
-    this.toDoService.delete(id).subscribe({
-      next: () => {
-        if (t?.isComplete) this.completedCount--;
-        this.tasks = this.tasks.filter(t => t.id !== id);
-      },
-      error: (err) => console.error('Erro ao excluir tarefa:', err)
-    });
-  }
-
-  // ================= Edição UI =================
-
-  startEdit(task: ToDoItem): void {
+  // Editar tarefa
+  startEdit(task: Task): void {
     this.editingTask = { ...task };
-    this.originalTitle = task.title;
+  }
+
+  updateTask(task: Task): void {
+    const index = this.tasks.findIndex(t => t.id === task.id);
+    if (index !== -1) {
+      this.tasks[index] = { ...task };
+    }
+    this.editingTask = null;
   }
 
   cancelEdit(): void {
-    if (this.editingTask) {
-      const taskIndex = this.tasks.findIndex(t => t.id === this.editingTask!.id);
-      if (taskIndex > -1) {
-        this.tasks[taskIndex].title = this.originalTitle;
-      }
-      this.editingTask = null;
-    }
+    this.editingTask = null;
   }
 
-  // ================= Autenticação =================
+  // Deletar
+  deleteTask(id: number): void {
+    this.tasks = this.tasks.filter(t => t.id !== id);
+  }
 
+  // Logout (placeholder)
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/auth']);
-  }
-
-  // ================= Filtros =================
-
-  get filteredTasks() {
-    if (this.filter === 'completed') return this.tasks.filter(t => t.isComplete);
-    if (this.filter === 'pending') return this.tasks.filter(t => !t.isComplete);
-    return this.tasks;
-  }
-
-  // ================= Helper =================
-
-  private updateCompletedCount() {
-    this.completedCount = this.tasks.filter(t => t.isComplete).length;
+    console.log('Usuário saiu.');
   }
 }

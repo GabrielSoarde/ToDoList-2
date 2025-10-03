@@ -2,6 +2,7 @@
 export interface ToDoItem {
   id: number;
   title: string;
+  description?: string;
   isComplete: boolean;
   createdAt: Date;
 }

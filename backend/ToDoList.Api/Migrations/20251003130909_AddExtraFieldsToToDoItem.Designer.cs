@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ToDoList.Api.Data;
@@ -11,9 +12,11 @@ using ToDoList.Api.Data;
 namespace ToDoList.Api.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    partial class ToDoListContextModelSnapshot : ModelSnapshot
+    [Migration("20251003130909_AddExtraFieldsToToDoItem")]
+    partial class AddExtraFieldsToToDoItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

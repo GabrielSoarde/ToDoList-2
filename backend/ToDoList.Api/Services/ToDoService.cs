@@ -1,82 +1,54 @@
-﻿using ToDoList.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ToDoList.Api.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks; // ESSENCIAL
+using ToDoList.Api.Models;
 
 namespace ToDoList.Api.Services
 {
     public class ToDoService : IToDoService
     {
         private readonly ToDoListContext _context;
-        private readonly string _currentUserId;
 
-        public ToDoService(ToDoListContext context, IHttpContextAccessor httpContextAccessor)
+        public ToDoService(ToDoListContext context)
         {
             _context = context;
-            _currentUserId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? 
-                             throw new UnauthorizedAccessException("Usuário não autenticado.");
         }
 
-        // READ (Todos) - Implementação Assíncrona
         public async Task<IEnumerable<ToDoItem>> GetAll()
         {
-            return await _context.ToDoItems
-                               .Where(t => t.UserId == _currentUserId)
-                               .ToListAsync(); // <-- Usando ToListAsync()
+            return await _context.ToDoItems.ToListAsync();
         }
 
-        // READ (Por ID)
         public async Task<ToDoItem?> GetById(int id)
         {
-            return await _context.ToDoItems
-                               .FirstOrDefaultAsync(t => t.Id == id && t.UserId == _currentUserId); // <-- Usando FirstOrDefaultAsync()
+            return await _context.ToDoItems.FindAsync(id);
         }
 
-        // CREATE
-        public async Task<ToDoItem> Add(ToDoItem newItem)
+        public async Task<ToDoItem> Create(ToDoItem item)
         {
-            newItem.CreatedAt = DateTime.UtcNow;
-            newItem.UserId = _currentUserId;
-            
-            _context.ToDoItems.Add(newItem);
-            await _context.SaveChangesAsync(); // <-- Usando SaveChangesAsync()
-            
-            return newItem;
+            _context.ToDoItems.Add(item);
+            await _context.SaveChangesAsync();
+            return item;
         }
 
-        // UPDATE
-        public async Task<bool> Update(ToDoItem updatedItem)
+        public async Task<bool> Update(ToDoItem item)
         {
-            var existingItem = await GetById(updatedItem.Id); // Já usa o método assíncrono
+            var exists = await _context.ToDoItems.AnyAsync(x => x.Id == item.Id);
+            if (!exists) return false;
 
-            if (existingItem == null)
-            {
-                return false; 
-            }
-
-            existingItem.Title = updatedItem.Title;
-            existingItem.IsComplete = updatedItem.IsComplete;
-            
-            await _context.SaveChangesAsync(); // <-- Usando SaveChangesAsync()
-
+            _context.Entry(item).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        // DELETE
         public async Task<bool> Delete(int id)
         {
-            var itemToRemove = await GetById(id); // Já usa o método assíncrono
-            
-            if (itemToRemove == null)
-            {
-                return false;
-            }
+            var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null) return false;
 
-            _context.ToDoItems.Remove(itemToRemove);
-            await _context.SaveChangesAsync(); // <-- Usando SaveChangesAsync()
-            
+            _context.ToDoItems.Remove(item);
+            await _context.SaveChangesAsync();
             return true;
         }
     }

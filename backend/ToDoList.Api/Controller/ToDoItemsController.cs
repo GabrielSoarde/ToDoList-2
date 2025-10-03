@@ -3,7 +3,8 @@ using ToDoList.Api.Models;
 using ToDoList.Api.Services;
 using Microsoft.AspNetCore.Authorization; 
 using System.Collections.Generic;
-using System.Threading.Tasks; // ESSENCIAL para usar async/await
+using System.Threading.Tasks;
+using ToDoList.Api.Models.Dtos; // ESSENCIAL para usar async/await
 
 namespace ToDoList.Api.Controllers
 {
@@ -43,14 +44,30 @@ namespace ToDoList.Api.Controllers
             return Ok(item);
         }
 
-        // POST: api/ToDoItems
         [HttpPost]
-        public async Task<ActionResult<ToDoItem>> PostToDoItem(ToDoItem toDoItem) // Corrigido
+        public async Task<ActionResult<ToDoItemDto>> Create(CreateToDoItemDto dto)
         {
-            // Chamada assíncrona
-            var createdItem = await _toDoService.Add(toDoItem); 
+            var item = new ToDoItem
+            {
+                Title = dto.Title,
+                DueDate = dto.DueDate,
+                Priority = dto.Priority,
+                Category = dto.Category,
+                UserId = User.Identity?.Name
+            };
 
-            return CreatedAtAction(nameof(GetToDoItem), new { id = createdItem.Id }, createdItem);
+            var createdItem = await _toDoService.Create(item);
+
+            return CreatedAtAction(nameof(GetToDoItem), new { id = createdItem.Id }, new ToDoItemDto
+            {
+                Id = createdItem.Id,
+                Title = createdItem.Title,
+                IsComplete = createdItem.IsComplete,
+                CreatedAt = createdItem.CreatedAt,
+                DueDate = createdItem.DueDate,
+                Priority = createdItem.Priority,
+                Category = createdItem.Category
+            });
         }
 
         // PUT: api/ToDoItems/5
