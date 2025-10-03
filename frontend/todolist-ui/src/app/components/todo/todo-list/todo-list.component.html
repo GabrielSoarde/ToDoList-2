@@ -1,57 +1,86 @@
-<div class="header">
-  <h1>Minhas Tarefas (To-Do List)</h1>
-  <button class="logout-btn" (click)="logout()">Sair</button>
-</div>
+<div class="todo-list-page">
 
-<div class="new-task-form">
-  <h3>Adicionar Nova Tarefa</h3>
-  <form (ngSubmit)="addTask()">
-    <input 
-      type="text" 
-      placeholder="O que precisa ser feito?" 
-      [(ngModel)]="newTaskTitle" 
-      name="taskTitle"
-      required
-    >
-    <button type="submit">Adicionar</button>
-  </form>
-</div>
+  <!-- Cabeçalho -->
+  <div class="header">
+    <h1>Minhas Tarefas (To-Do List)</h1>
+    <button class="logout-btn" (click)="logout()">Sair</button>
+  </div>
 
-<div class="task-summary">
-  <p>{{ completedCount }} de {{ tasks.length }} concluídas</p>
-</div>
+  <!-- Resumo -->
+  <div class="task-summary">
+    <p>{{ completedCount }} de {{ tasks.length }} concluídas</p>
+  </div>
 
-<div class="filters">
-  <button (click)="filter='all'">Todas</button>
-  <button (click)="filter='pending'">Pendentes</button>
-  <button (click)="filter='completed'">Concluídas</button>
-</div>
+  <!-- Filtros -->
+  <div class="filters">
+    <input type="text" placeholder="🔍 Buscar tarefa..." [(ngModel)]="searchTerm">
+    <select [(ngModel)]="selectedCategory">
+      <option value="Todas">Todas</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    <button (click)="filter='all'">Todas</button>
+    <button (click)="filter='pending'">Pendentes</button>
+    <button (click)="filter='completed'">Concluídas</button>
+  </div>
 
-<div class="task-list">
-  @if (filteredTasks.length === 0) {
-    <p class="empty-message">Nenhuma tarefa encontrada. Comece adicionando uma!</p>
-  } @else {
+  <!-- Nova Tarefa -->
+  <div class="new-task">
+    <h3>Adicionar Nova Tarefa</h3>
+
+    <input #taskTitle type="text" placeholder="Título da tarefa" />
+    <textarea #taskDescription placeholder="Descrição da tarefa"></textarea>
+
+    <input #taskDueDate type="date" />
+    <select #taskPriority>
+      <option>Alta</option>
+      <option>Média</option>
+      <option>Baixa</option>
+    </select>
+    <select #taskCategory>
+      <option *ngFor="let cat of categories">{{cat}}</option>
+    </select>
+
+    <button (click)="addTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskPriority.value, taskCategory.value)">
+      + Adicionar
+    </button>
+  </div>
+
+  <!-- Lista -->
+  <div class="task-list">
     <ul>
-      @for (task of filteredTasks; track task.id) {
-        <li [class.completed]="task.isComplete" 
-            [class.editing]="editingTask?.id === task.id">
+      <li *ngFor="let task of filteredTasks" 
+          [class.completed]="task.isComplete" 
+          [class.editing]="editingTask?.id === task.id">
 
-          <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateTask(task)">
+        <!-- Checkbox -->
+        <input type="checkbox" [(ngModel)]="task.isComplete" (change)="updateTask(task)">
 
-          <!-- Se estiver editando esta tarefa -->
-          @if (editingTask?.id === task.id) {
-            <input type="text" [(ngModel)]="task.title" name="editTitle-{{task.id}}" class="edit-input">
-            <button class="save-btn" (click)="updateTask(task)">Salvar</button>
-            <button class="cancel-btn" (click)="cancelEdit()">Cancelar</button>
-          } @else {
-            <span class="task-title">{{ task.title }}</span>
-            <div class="actions">
-              <button class="edit-btn" (click)="startEdit(task)">Editar</button>
-              <button class="delete-btn" (click)="deleteTask(task.id)">Excluir</button>
-            </div>
-          }
-        </li>
-      }
+        <!-- Se editando -->
+        <ng-container *ngIf="editingTask?.id === task.id; else showTask">
+          <input type="text" [(ngModel)]="task.title" class="edit-input">
+          <button class="save-btn" (click)="updateTask(task)">Salvar</button>
+          <button class="cancel-btn" (click)="cancelEdit()">Cancelar</button>
+        </ng-container>
+
+        <!-- Mostrar -->
+        <ng-template #showTask>
+          <span class="task-title">{{ task.title }}</span>
+          <small *ngIf="task.description">📝 {{ task.description }}</small>
+          <small *ngIf="task.dueDate">📅 {{ task.dueDate | date:'dd/MM/yyyy' }}</small>
+          <small *ngIf="task.priority">⚡ {{ task.priority }}</small>
+          <small *ngIf="task.category">📂 {{ task.category }}</small>
+
+          <div class="actions">
+            <button class="edit-btn" (click)="startEdit(task)">Editar</button>
+            <button class="delete-btn" (click)="deleteTask(task.id)">Excluir</button>
+          </div>
+        </ng-template>
+      </li>
     </ul>
-  }
+
+    <!-- Sem tarefas -->
+    <p *ngIf="filteredTasks.length === 0" class="empty-message">
+      Nenhuma tarefa encontrada. Comece adicionando uma!
+    </p>
+  </div>
 </div>
