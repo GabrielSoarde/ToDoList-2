@@ -20,9 +20,22 @@ namespace ToDoList.Api.Services
             return await _context.ToDoItems.ToListAsync();
         }
 
+        public async Task<IEnumerable<ToDoItem>> GetAllForUser(string userId)
+        {
+            return await _context.ToDoItems
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<ToDoItem?> GetById(int id)
         {
             return await _context.ToDoItems.FindAsync(id);
+        }
+
+        public async Task<ToDoItem?> GetByIdForUser(int id, string userId)
+        {
+            return await _context.ToDoItems
+                .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
         }
 
         public async Task<ToDoItem> Create(ToDoItem item)
@@ -45,6 +58,17 @@ namespace ToDoList.Api.Services
         public async Task<bool> Delete(int id)
         {
             var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null) return false;
+
+            _context.ToDoItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteForUser(int id, string userId)
+        {
+            var item = await _context.ToDoItems
+                .FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
             if (item == null) return false;
 
             _context.ToDoItems.Remove(item);

@@ -6,6 +6,16 @@
     <button class="logout-btn" (click)="logout()">Sair</button>
   </div>
 
+  <!-- Mensagem de erro -->
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="loading">Carregando tarefas...</div>
+  }
+
   <!-- Resumo -->
   <div class="task-summary">
     <p>{{ completedCount() }} de {{ tasks().length }} concluídas</p>

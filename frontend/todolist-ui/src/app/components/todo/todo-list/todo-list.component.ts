@@ -20,6 +20,8 @@ export class ToDoListComponent implements OnInit {
   filter = signal<'all' | 'pending' | 'completed'>('all');
   searchTerm = signal<string>('');
   selectedCategory = signal<string>('Todas');
+  loading = signal<boolean>(false);
+  error = signal<string | null>(null);
   
   // Forms
   addTaskForm: FormGroup;
@@ -73,12 +75,22 @@ export class ToDoListComponent implements OnInit {
   }
 
   loadTasks(): void {
+    this.loading.set(true);
+    this.error.set(null);
+    
     this.toDoService.getAll().subscribe({
-      next: (loadedTasks) => this.tasks.set(loadedTasks.map(t => ({
-        ...t,
-        dueDate: t.dueDate ? t.dueDate.split('T')[0] : undefined
-      }))),
-      error: (err) => console.error('Erro ao carregar tarefas:', err)
+      next: (loadedTasks) => {
+        this.tasks.set(loadedTasks.map(t => ({
+          ...t,
+          dueDate: t.dueDate ? t.dueDate.split('T')[0] : undefined
+        })));
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.error.set(err.message || 'Erro ao carregar tarefas');
+        console.error('Erro ao carregar tarefas:', err);
+      }
     });
   }
 
@@ -94,7 +106,10 @@ export class ToDoListComponent implements OnInit {
         this.tasks.update(currentTasks => [...currentTasks, newTask]);
         this.addTaskForm.reset({ priority: 'Baixa', category: 'Pessoal' });
       },
-      error: (err) => console.error('Erro ao adicionar tarefa:', err)
+      error: (err) => {
+        this.error.set(err.message || 'Erro ao adicionar tarefa');
+        console.error('Erro ao adicionar tarefa:', err);
+      }
     });
   }
 
@@ -117,7 +132,10 @@ export class ToDoListComponent implements OnInit {
           currentTasks.map(t => t.id === task.id ? { ...t, isComplete } : t)
         );
       },
-      error: (err) => console.error('Erro ao atualizar status da tarefa:', err)
+      error: (err) => {
+        this.error.set(err.message || 'Erro ao atualizar status da tarefa');
+        console.error('Erro ao atualizar status da tarefa:', err);
+      }
     });
   }
 
@@ -141,6 +159,7 @@ export class ToDoListComponent implements OnInit {
         this.editingTask.set(null);
       },
       error: (err) => {
+        this.error.set(err.message || 'Falha ao atualizar tarefa');
         console.error('Erro ao atualizar tarefa:', err);
         alert('Falha ao atualizar tarefa. Verifique os dados.');
       }
@@ -153,12 +172,17 @@ export class ToDoListComponent implements OnInit {
   }
 
   deleteTask(id: number): void {
-    this.toDoService.delete(id).subscribe({
-      next: () => {
-        this.tasks.update(currentTasks => currentTasks.filter(t => t.id !== id));
-      },
-      error: (err) => console.error('Erro ao deletar tarefa:', err)
-    });
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+      this.toDoService.delete(id).subscribe({
+        next: () => {
+          this.tasks.update(currentTasks => currentTasks.filter(t => t.id !== id));
+        },
+        error: (err) => {
+          this.error.set(err.message || 'Erro ao deletar tarefa');
+          console.error('Erro ao deletar tarefa:', err);
+        }
+      });
+    }
   }
 
   logout(): void {

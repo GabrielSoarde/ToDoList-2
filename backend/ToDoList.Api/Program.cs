@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // 1️⃣ Configuração dos Serviços
 // ---------------------------
 
-// CORS
+// CORS - Restringindo para apenas os cabeçalhos e métodos necessários
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
@@ -22,7 +22,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials(); // Adiciona permissão para credenciais
     });
 });
 
@@ -45,11 +46,21 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // Opções de Identity (Senha, Email, etc.)
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
+    // Configurações de senha
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false; // Pode ser true se quiser mais segurança
     options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Configurações de bloqueio de conta para proteção contra brute force
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // Configurações de usuário
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
 });
 
