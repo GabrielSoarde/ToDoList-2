@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ToDoList.Api.Models;
 using ToDoList.Api.Services;
 using Microsoft.AspNetCore.Authorization; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoList.Api.Models.Dtos; // ESSENCIAL para usar async/await
+using System.Security.Claims; // Adicionado para ClaimTypes
 
 namespace ToDoList.Api.Controllers
 {
@@ -21,20 +22,28 @@ namespace ToDoList.Api.Controllers
             _toDoService = toDoService;
         }
 
-        // GET: api/ToDoItems
+        // GET: api/ToDoItems - Retorna apenas as tarefas do usuário autenticado
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetToDoItems() // Corrigido
         {
-            // Chamada assíncrona
-            return Ok(await _toDoService.GetAll());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            // Retorna apenas as tarefas do usuário autenticado
+            return Ok(await _toDoService.GetAllForUser(userId));
         }
 
-        // GET: api/ToDoItems/5
+        // GET: api/ToDoItems/5 - Retorna apenas a tarefa se pertencer ao usuário autenticado
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDoItem>> GetToDoItem(int id) // Corrigido
         {
-            // Chamada assíncrona
-            var item = await _toDoService.GetById(id); 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            // Busca a tarefa apenas se pertencer ao usuário autenticado
+            var item = await _toDoService.GetByIdForUser(id, userId); 
 
             if (item == null)
             {
@@ -47,6 +56,12 @@ namespace ToDoList.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ToDoItemDto>> Create(CreateToDoItemDto dto)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(); // Não deveria acontecer se [Authorize] estiver funcionando
+            }
+
             var item = new ToDoItem
             {
                 Title = dto.Title,
@@ -54,7 +69,7 @@ namespace ToDoList.Api.Controllers
                 DueDate = dto.DueDate,
                 Priority = dto.Priority,
                 Category = dto.Category,
-                UserId = User.Identity?.Name
+                UserId = userId // Corrigido para usar o ID do usuário
             };
 
             var createdItem = await _toDoService.Create(item);
@@ -72,11 +87,16 @@ namespace ToDoList.Api.Controllers
             });
         }
 
-        // PUT: api/ToDoItems/5
+        // PUT: api/ToDoItems/5 - Atualiza apenas a tarefa se pertencer ao usuário autenticado
         [HttpPut("{id}")]
         public async Task<IActionResult> PutToDoItem(int id, UpdateToDoItemDto dto)
         {
-            var existingItem = await _toDoService.GetById(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
+            // Verifica se a tarefa pertence ao usuário antes de atualizar
+            var existingItem = await _toDoService.GetByIdForUser(id, userId);
             if (existingItem == null)
                 return NotFound();
 
@@ -99,12 +119,17 @@ namespace ToDoList.Api.Controllers
             return NoContent();
         }
 
-        // DELETE: api/ToDoItems/5
+        // DELETE: api/ToDoItems/5 - Deleta apenas a tarefa se pertencer ao usuário autenticado
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteToDoItem(int id) // Corrigido
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
 
-            if (!await _toDoService.Delete(id))
+            var result = await _toDoService.DeleteForUser(id, userId);
+            
+            if (!result)
             {
                 return NotFound();
             }

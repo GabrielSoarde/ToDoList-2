@@ -32,6 +32,12 @@ namespace ToDoList.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
+            // Validação adicional dos dados de entrada
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             // 1. Cria o novo ApplicationUser
             var user = new ApplicationUser 
             {
@@ -54,23 +60,40 @@ namespace ToDoList.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            // 1. Tenta fazer login com a senha
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            // Validação adicional dos dados de entrada
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // 1. Busca o usuário pelo email para verificar se existe
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Retornar o mesmo erro para usuários inexistentes para evitar enumeração
+                await Task.Delay(2000); // Adiciona um delay para evitar timing attacks
+                return Unauthorized("Login ou senha inválidos.");
+            }
+
+            // 2. Tenta fazer login com a senha
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
-                // 2. Busca o usuário
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null) return Unauthorized("Erro ao buscar usuário.");
-
                 // 3. Gera o Token JWT
                 var token = await GenerateJwtToken(user);
 
                 // 4. Retorna o token para o Frontend
                 return Ok(new { Token = token, Email = user.Email });
             }
-
-            return Unauthorized("Login ou senha inválidos.");
+            else if (result.IsLockedOut)
+            {
+                return Unauthorized("Conta temporariamente bloqueada devido a tentativas de login falhas.");
+            }
+            else
+            {
+                return Unauthorized("Login ou senha inválidos.");
+            }
         }
 
         // Método auxiliar para gerar o token JWT
@@ -92,7 +115,7 @@ namespace ToDoList.Api.Controllers
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7), // Token válido por 7 dias
+                expires: DateTime.Now.AddHours(2), // Reduzindo o tempo de validade para 2 horas
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
