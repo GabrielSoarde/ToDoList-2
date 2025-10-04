@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { ToDoItem } from '../models/todo-item.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoService {
-  // A URL da API para o ToDoItemsController (http://localhost:5269/api/ToDoItems)
-  private apiUrl = 'http://localhost:5269/api/ToDoItems';
+  private apiUrl = `${environment.apiUrl}/ToDoItems`;
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +28,7 @@ export class ToDoService {
   add(item: { 
   title: string;
   description?: string;
-  dueDate?: string | null;     // <-- string, não Date
+  dueDate?: Date | null;     // <-- string, não Date
   priority?: string | null;
   category?: string | null;
   isComplete?: boolean;

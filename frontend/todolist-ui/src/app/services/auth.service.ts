@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-// O caminho agora funciona porque criamos a pasta models!
-import { LoginModel, RegisterModel, TokenResponse } from '../models/auth.model'; 
+import { environment } from '../../environments/environment';
+import { LoginModel, RegisterModel, TokenResponse } from '../models/auth.model';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5269/api/Auth';
+  private apiUrl = `${environment.apiUrl}/Auth`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private storageService: StorageService) { }
 
   register(model: RegisterModel): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, model);
@@ -21,17 +22,17 @@ export class AuthService {
   }
 
   setToken(response: TokenResponse): void {
-    localStorage.setItem('auth_token', response.token);
-    localStorage.setItem('auth_email', response.email);
+    this.storageService.setItem('auth_token', response.token);
+    this.storageService.setItem('auth_email', response.email);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return this.storageService.getItem('auth_token');
   }
 
   logout(): void {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_email');
+    this.storageService.removeItem('auth_token');
+    this.storageService.removeItem('auth_email');
   }
 
   isLoggedIn(): boolean {

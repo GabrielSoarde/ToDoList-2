@@ -3,7 +3,7 @@
 import { Routes } from '@angular/router';
 import { LoginRegisterComponent } from './components/auth/login-register/login-register.component'; 
 import { ToDoListComponent } from './components/todo/todo-list/todo-list.component';
-import { AuthGuard } from './guards/auth.guard';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     { 
@@ -15,7 +15,7 @@ export const routes: Routes = [
         path: 'tasks',
         component: ToDoListComponent,
         title: 'Minhas Tarefas',
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
     },
     // Redireciona a rota base para a tela de autenticação
     { 

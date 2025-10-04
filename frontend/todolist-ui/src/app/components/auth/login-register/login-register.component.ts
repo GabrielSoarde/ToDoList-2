@@ -1,36 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { LoginModel, RegisterModel } from '../../../models/auth.model';
+
+// Validador customizado para senhas
+export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  if (password && confirmPassword && password.value !== confirmPassword.value) {
+    return { passwordsMismatch: true };
+  }
+
+  return null;
+}
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
 })
 export class LoginRegisterComponent implements OnInit {
-  isLoginMode: boolean = true;
+  isLoginMode = true;
+  errorMessage = '';
 
-  loginData: LoginModel = { email: '', password: '' };
-  registerData: RegisterModel = { email: '', password: '', confirmPassword: '' };
+  loginForm: FormGroup;
+  registerForm: FormGroup;
 
-  errorMessage: string = '';
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService, 
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
 
-  constructor(private authService: AuthService, private router: Router) {}
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]]
+    }, { validators: passwordsMatchValidator });
+  }
 
   ngOnInit(): void {
-    // Limpa tokens antigos (importante ao recriar o banco)
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_email');
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks']);
+    }
   }
 
   toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
     this.errorMessage = '';
+    this.loginForm.reset();
+    this.registerForm.reset();
   }
 
   onSubmit(): void {
@@ -43,12 +70,12 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   private handleLogin(): void {
-    if (!this.isValidEmail(this.loginData.email)) {
-      this.errorMessage = 'E-mail inválido!';
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, preencha os campos corretamente.';
       return;
     }
 
-    this.authService.login(this.loginData).subscribe({
+    this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         this.authService.setToken(res);
         this.router.navigate(['/tasks']);
@@ -61,31 +88,26 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   private handleRegister(): void {
-    if (!this.isValidEmail(this.registerData.email)) {
-      this.errorMessage = 'E-mail inválido!';
+    if (this.registerForm.invalid) {
+      this.errorMessage = 'Por favor, preencha os campos corretamente.';
+       if (this.registerForm.errors?.['passwordsMismatch']) {
+        this.errorMessage = 'As senhas não coincidem!';
+      }
       return;
     }
 
-    if (this.registerData.password !== this.registerData.confirmPassword) {
-      this.errorMessage = 'As senhas não coincidem!';
-      return;
-    }
+    const { confirmPassword, ...registerData } = this.registerForm.value;
 
-    this.authService.register(this.registerData).subscribe({
+    this.authService.register(registerData).subscribe({
       next: () => {
         this.errorMessage = 'Registro realizado com sucesso! Faça login agora.';
         this.isLoginMode = true;
-        this.loginData.email = this.registerData.email;
+        this.loginForm.patchValue({ email: this.registerForm.value.email });
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Falha no registro. E-mail já em uso ou senha fraca.';
+        this.errorMessage = err.error?.errors?.[0]?.description || 'Falha no registro. E-mail já em uso ou senha fraca.';
         console.error(err);
       }
     });
-  }
-
-  private isValidEmail(email: string): boolean {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
   }
 }

@@ -2,36 +2,42 @@
   <h2>{{ isLoginMode ? 'Login' : 'Registrar' }}</h2>
 
   <!-- Mensagem de erro ou sucesso -->
-  <div *ngIf="errorMessage" class="message-box"
-       [class.error]="errorMessage.includes('Falha') || errorMessage.includes('inválido')"
-       [class.success]="!errorMessage.includes('Falha') && !errorMessage.includes('inválido')">
-    {{ errorMessage }}
-  </div>
+  @if (errorMessage) {
+    <div class="message-box" [class.error]="!errorMessage.includes('sucesso')" [class.success]="errorMessage.includes('sucesso')">
+      {{ errorMessage }}
+    </div>
+  }
 
   <!-- Formulário de Login -->
-  <form *ngIf="isLoginMode" (ngSubmit)="onSubmit()" #loginForm="ngForm">
-    <label for="loginEmail">Email:</label>
-    <input type="email" id="loginEmail" name="loginEmail" [(ngModel)]="loginData.email" required>
-    
-    <label for="loginPassword">Senha:</label>
-    <input type="password" id="loginPassword" name="loginPassword" [(ngModel)]="loginData.password" required>
+  @if (isLoginMode) {
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label for="loginEmail">Email:</label>
+      <input type="email" id="loginEmail" formControlName="email">
+      
+      <label for="loginPassword">Senha:</label>
+      <input type="password" id="loginPassword" formControlName="password">
 
-    <button type="submit" [disabled]="!loginForm.valid">Entrar</button>
-  </form>
+      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+    </form>
+  } @else {
+    <!-- Formulário de Registro -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <label for="registerEmail">Email:</label>
+      <input type="email" id="registerEmail" formControlName="email">
 
-  <!-- Formulário de Registro -->
-  <form *ngIf="!isLoginMode" (ngSubmit)="onSubmit()" #registerForm="ngForm">
-    <label for="registerEmail">Email:</label>
-    <input type="email" id="registerEmail" name="registerEmail" [(ngModel)]="registerData.email" required>
+      <label for="registerPassword">Senha:</label>
+      <input type="password" id="registerPassword" formControlName="password">
 
-    <label for="registerPassword">Senha:</label>
-    <input type="password" id="registerPassword" name="registerPassword" [(ngModel)]="registerData.password" required>
+      <label for="confirmPassword">Confirmar Senha:</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword">
 
-    <label for="confirmPassword">Confirmar Senha:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="registerData.confirmPassword" required>
+      @if (registerForm.errors?.['passwordsMismatch'] && (registerForm.get('confirmPassword')?.touched)) {
+        <div class="message-box error">As senhas não coincidem.</div>
+      }
 
-    <button type="submit" [disabled]="!registerForm.valid">Registrar</button>
-  </form>
+      <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+    </form>
+  }
 
   <hr>
 
