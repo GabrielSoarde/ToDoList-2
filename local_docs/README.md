@@ -1,6 +1,6 @@
-# Documentação do Projeto ToDoList
+# Documentação do Projeto ToDoList (Local)
 
-Bem-vindo à documentação do projeto ToDoList! Esta pasta contém todos os documentos necessários para entender os padrões, guidelines e arquitetura do projeto.
+Bem-vindo à documentação local do projeto ToDoList! Esta pasta contém todos os documentos necessários para entender os padrões, guidelines e arquitetura do projeto.
 
 ## Índice
 
