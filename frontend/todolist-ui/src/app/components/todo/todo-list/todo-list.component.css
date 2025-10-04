@@ -108,8 +108,8 @@
   min-width: 140px;
 }
 
-.new-task button {
-  background-color: #6c63ff;
+.new-task button[type="submit"] {
+  background-color: var(--primary-color);
   color: white;
   padding: 10px 16px;
   border: none;
@@ -119,8 +119,8 @@
   transition: background 0.2s;
 }
 
-.new-task button:hover {
-  background-color: #5548d8;
+.new-task button[type="submit"]:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
 /* ===== Lista de Tarefas ===== */
