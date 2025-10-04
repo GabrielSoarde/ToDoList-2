@@ -8,3 +8,7 @@
 node_modules/
 dist/
 .angular/
+
+# Pastas de documentação local
+docs/
+agentes/
