@@ -12,6 +12,7 @@ namespace ToDoList.Api.Services
         Task<ToDoItem?> GetByIdForUser(int id, string userId);
         Task<ToDoItem> Create(ToDoItem item);
         Task<bool> Update(ToDoItem item);
+        Task<bool> UpdateForUser(int id, string userId, ToDoList.Api.Models.Dtos.UpdateToDoItemDto dto);
         Task<bool> Delete(int id);
         Task<bool> DeleteForUser(int id, string userId);
     }

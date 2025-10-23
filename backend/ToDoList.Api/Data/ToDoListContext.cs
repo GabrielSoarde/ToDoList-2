@@ -16,7 +16,7 @@ namespace ToDoList.Api.Data
         }
 
         // A tabela de ToDoList permanece
-        public DbSet<ToDoItem> ToDoItems { get; set; } = default!; 
+        public virtual DbSet<ToDoItem> ToDoItems { get; set; } = default!; 
         
         // O IdentityDbContext já cuidará das tabelas AspNetUsers, AspNetRoles, etc.
 

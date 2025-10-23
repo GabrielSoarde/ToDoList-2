@@ -21,7 +21,7 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-register.component.html',
-  styleUrls: ['./login-register.component.css']
+  styleUrls: ['./login-register.component.scss']
 })
 export class LoginRegisterComponent implements OnInit {
   isLoginMode = true;
@@ -96,7 +96,12 @@ export class LoginRegisterComponent implements OnInit {
       return;
     }
 
-    const { confirmPassword, ...registerData } = this.registerForm.value;
+    const { email, password, confirmPassword } = this.registerForm.value;
+
+    // O backend espera um Username. Vamos derivá-lo do email.
+    const username = email.split('@')[0];
+
+    const registerData = { email, password, confirmPassword, username };
 
     this.authService.register(registerData).subscribe({
       next: () => {

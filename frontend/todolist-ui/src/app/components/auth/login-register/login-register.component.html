@@ -1,48 +1,52 @@
-<div class="auth-container">
-  <h2>{{ isLoginMode ? 'Login' : 'Registrar' }}</h2>
+<div class="login-register">
+  <h2 class="login-register__title">{{ isLoginMode ? 'Login' : 'Registrar' }}</h2>
 
   <!-- Mensagem de erro ou sucesso -->
   @if (errorMessage) {
-    <div class="message-box" [class.error]="!errorMessage.includes('sucesso')" [class.success]="errorMessage.includes('sucesso')">
+    <div 
+      class="login-register__message" 
+      [class.login-register__message--error]="!errorMessage.includes('sucesso')" 
+      [class.login-register__message--success]="errorMessage.includes('sucesso')"
+    >
       {{ errorMessage }}
     </div>
   }
 
   <!-- Formulário de Login -->
   @if (isLoginMode) {
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <label for="loginEmail">Email:</label>
-      <input type="email" id="loginEmail" formControlName="email">
+    <form class="login-register__form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <label class="login-register__label" for="loginEmail">Email:</label>
+      <input class="login-register__input" type="email" id="loginEmail" formControlName="email">
       
-      <label for="loginPassword">Senha:</label>
-      <input type="password" id="loginPassword" formControlName="password">
+      <label class="login-register__label" for="loginPassword">Senha:</label>
+      <input class="login-register__input" type="password" id="loginPassword" formControlName="password">
 
-      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+      <button class="login-register__button" type="submit" [disabled]="loginForm.invalid">Entrar</button>
     </form>
   } @else {
     <!-- Formulário de Registro -->
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <label for="registerEmail">Email:</label>
-      <input type="email" id="registerEmail" formControlName="email">
+    <form class="login-register__form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <label class="login-register__label" for="registerEmail">Email:</label>
+      <input class="login-register__input" type="email" id="registerEmail" formControlName="email">
 
-      <label for="registerPassword">Senha:</label>
-      <input type="password" id="registerPassword" formControlName="password">
+      <label class="login-register__label" for="registerPassword">Senha:</label>
+      <input class="login-register__input" type="password" id="registerPassword" formControlName="password">
 
-      <label for="confirmPassword">Confirmar Senha:</label>
-      <input type="password" id="confirmPassword" formControlName="confirmPassword">
+      <label class="login-register__label" for="confirmPassword">Confirmar Senha:</label>
+      <input class="login-register__input" type="password" id="confirmPassword" formControlName="confirmPassword">
 
       @if (registerForm.errors?.['passwordsMismatch'] && (registerForm.get('confirmPassword')?.touched)) {
-        <div class="message-box error">As senhas não coincidem.</div>
+        <div class="login-register__message login-register__message--error">As senhas não coincidem.</div>
       }
 
-      <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
+      <button class="login-register__button" type="submit" [disabled]="registerForm.invalid">Registrar</button>
     </form>
   }
 
-  <hr>
+  <hr class="login-register__divider">
 
-  <p>
+  <p class="login-register__toggle-text">
     {{ isLoginMode ? 'Não tem conta?' : 'Já tem conta?' }}
-    <a (click)="toggleMode()">{{ isLoginMode ? 'Crie uma agora' : 'Faça login' }}</a>
+    <a class="login-register__toggle-link" (click)="toggleMode()">{{ isLoginMode ? 'Crie uma agora' : 'Faça login' }}</a>
   </p>
 </div>

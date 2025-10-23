@@ -1,0 +1,83 @@
+:host {
+  display: block;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.todo-list {
+  padding: 24px;
+
+  &__error {
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 24px;
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  &__summary {
+    flex-shrink: 0;
+  }
+
+  &__summary-title {
+    margin: 0;
+    font-size: 1.2em;
+    color: #666;
+  }
+
+  &__summary-count {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+  }
+
+  &__main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+  }
+
+  &__form-container {
+    grid-column: 1;
+  }
+
+  &__list-container {
+    grid-column: 2;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .todo-list__main {
+    grid-template-columns: 1fr;
+  }
+
+  .todo-list__form-container {
+    grid-row: 1;
+  }
+
+  .todo-list__list-container {
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .todo-list__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,122 +1,49 @@
-<div class="todo-list-page">
+<mat-toolbar color="primary">
+  <span>Minhas Tarefas</span>
+  <span class="toolbar-spacer"></span>
+  <button mat-icon-button (click)="logout()" aria-label="Sair">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
 
-  <!-- Cabeçalho -->
-  <div class="header">
-    <h1>Minhas Tarefas (To-Do List)</h1>
-    <button class="logout-btn" (click)="logout()">Sair</button>
-  </div>
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" aria-label="Carregando tarefas"></mat-progress-bar>
+}
 
-  <!-- Mensagem de erro -->
+<div class="todo-list">
   @if (error()) {
-    <div class="error-message">{{ error() }}</div>
+    <mat-card class="todo-list__error">
+      <mat-card-content>
+        <p>{{ error() }}</p>
+      </mat-card-content>
+    </mat-card>
   }
 
-  <!-- Loading -->
-  @if (loading()) {
-    <div class="loading">Carregando tarefas...</div>
-  }
-
-  <!-- Resumo -->
-  <div class="task-summary">
-    <p>{{ completedCount() }} de {{ tasks().length }} concluídas</p>
+  <div class="todo-list__controls">
+    <div class="todo-list__summary">
+      <h2 class="todo-list__summary-title">Resumo</h2>
+      <p class="todo-list__summary-count">{{ completedCount() }} de {{ tasks().length }} concluídas</p>
+    </div>
+    <app-task-filter [categories]="categories" />
   </div>
 
-  <!-- Filtros -->
-  <div class="filters">
-    <input type="text" placeholder="🔍 Buscar tarefa..." [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)">
-    <select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)">
-      <option value="Todas">Todas</option>
-      @for (cat of categories; track cat) {
-        <option [value]="cat">{{ cat }}</option>
+  <div class="todo-list__main">
+    <div class="todo-list__form-container">
+      <app-add-task-form [categories]="categories" (taskAdded)="handleTaskAdded($event)" />
+    </div>
+    <div class="todo-list__list-container">
+      @if (filteredTasks()) {
+        <app-task-list
+          [tasks]="filteredTasks()"
+          [editingTaskId]="editingTaskId()"
+          [categories]="categories"
+          (toggleComplete)="handleToggleComplete($event)"
+          (delete)="handleDelete($event)"
+          (edit)="handleEdit($event)"
+          (save)="handleSave($event)"
+          (cancel)="handleCancelEdit()"
+        />
       }
-    </select>
-    <button (click)="filter.set('all')">Todas</button>
-    <button (click)="filter.set('pending')">Pendentes</button>
-    <button (click)="filter.set('completed')">Concluídas</button>
-  </div>
-
-  <!-- Nova Tarefa -->
-  <form class="new-task" [formGroup]="addTaskForm" (ngSubmit)="addTask()">
-    <h3>Adicionar Nova Tarefa</h3>
-
-    <input type="text" placeholder="Título da tarefa" formControlName="title">
-    <textarea placeholder="Descrição da tarefa" formControlName="description"></textarea>
-
-    <input type="date" formControlName="dueDate">
-    <select formControlName="priority">
-      <option value="Alta">Alta</option>
-      <option value="Média">Média</option>
-      <option value="Baixa">Baixa</option>
-    </select>
-    <select formControlName="category">
-      @for (cat of categories; track cat) {
-        <option [value]="cat">{{ cat }}</option>
-      }
-    </select>
-
-    <button type="submit" [disabled]="addTaskForm.invalid">+ Adicionar</button>
-  </form>
-
-  <!-- Lista de tarefas -->
-  <div class="task-list">
-    <ul>
-      @for (task of filteredTasks(); track task.id) {
-        <li [class.completed]="task.isComplete" [class.editing]="editingTask()?.id === task.id">
-
-          @if (editingTask()?.id !== task.id) {
-            <input type="checkbox" [checked]="task.isComplete" (change)="updateTaskOnCompletion(task, $event.target.checked)">
-
-            <div class="task-content">
-              <span class="task-title">{{ task.title }}</span>
-
-              <div class="task-metadata">
-                @if (task.description) {
-                  <small><span>📝</span> {{ task.description }}</small>
-                }
-                @if (task.dueDate) {
-                  <small><span>📅</span> {{ task.dueDate | date:'dd/MM/yyyy' }}</small>
-                }
-                @if (task.priority) {
-                  <small><span>⚡</span> {{ task.priority }}</small>
-                }
-                @if (task.category) {
-                  <small><span>📂</span> {{ task.category }}</small>
-                }
-              </div>
-            </div>
-
-            <div class="actions">
-              <button (click)="startEdit(task)" class="edit-btn">Editar</button>
-              <button (click)="deleteTask(task.id)" class="delete-btn">Excluir</button>
-            </div>
-          } @else {
-            <!-- Edição -->
-            <form class="edit-task" [formGroup]="editTaskForm" (ngSubmit)="submitEdit()">
-              <input type="text" placeholder="Título da tarefa" formControlName="title">
-              <textarea placeholder="Descrição da tarefa" formControlName="description"></textarea>
-              <input type="date" formControlName="dueDate">
-              <select formControlName="priority">
-                <option>Alta</option>
-                <option>Média</option>
-                <option>Baixa</option>
-              </select>
-              <select formControlName="category">
-                @for (cat of categories; track cat) {
-                  <option [value]="cat">{{ cat }}</option>
-                }
-              </select>
-
-              <div class="actions">
-                <button type="submit" [disabled]="editTaskForm.invalid" class="save-btn">Salvar</button>
-                <button type="button" (click)="cancelEdit()" class="cancel-btn">Cancelar</button>
-              </div>
-            </form>
-          }
-        </li>
-      }
-    </ul>
-    @if (filteredTasks().length === 0) {
-      <p class="empty-message">Nenhuma tarefa encontrada. Comece adicionando uma!</p>
-    }
+    </div>
   </div>
 </div>

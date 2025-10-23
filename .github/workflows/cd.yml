@@ -1,0 +1,87 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # This job depends on the CI checks passing. For simplicity, the CI steps are included here.
+    # In a more complex scenario, you might have a separate job for CI and make this job dependent on it.
+
+    environment:
+      name: production
+      url: ${{ steps.deploy-frontend.outputs.webapp-url }} # Example: This will be the URL of the deployed frontend
+
+    steps:
+    # --- CI Steps (Build and Test) ---
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # .NET Backend
+    - name: Setup .NET 9.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore Backend Dependencies
+      run: dotnet restore backend/ToDoList.Api/ToDoList.Api.csproj
+
+    - name: Build Backend for Production
+      run: dotnet build backend/ToDoList.Api/ToDoList.Api.csproj --configuration Release --no-restore
+
+    - name: Test Backend
+      run: echo "Backend tests not implemented yet"
+
+    # Node.js Frontend
+    - name: Setup Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: frontend/todolist-ui/package-lock.json
+
+    - name: Restore Frontend Dependencies
+      run: npm install --prefix frontend/todolist-ui
+
+    - name: Lint and Format Check
+      run: |
+        npm run lint --prefix frontend/todolist-ui
+        npm run format:check --prefix frontend/todolist-ui
+
+    - name: Build Frontend for Production
+      run: npm run build -- --configuration production --prefix frontend/todolist-ui
+
+    - name: Test Frontend
+      run: npm test -- --watch=false --browsers=ChromeHeadless --prefix frontend/todolist-ui
+
+    # --- CD Steps (Deploy) ---
+
+    # TODO: Configure secrets in your GitHub repository settings (e.g., AZURE_CREDENTIALS, CONNECTION_STRING)
+    # For more info, see: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Example for Azure. Create this secret in your repository settings.
+
+    - name: Deploy Backend to Azure App Service
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'your-backend-app-name' # TODO: Replace with your App Service name
+        package: 'backend/ToDoList.Api' # Path to the backend project to be deployed
+        # TODO: Add other necessary parameters like connection strings using secrets.
+        # Example: connection-strings: 'DefaultConnection=${{ secrets.DB_CONNECTION_STRING }}'
+
+    - name: Deploy Frontend to Azure Static Web Apps
+      id: deploy-frontend
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # TODO: Create this secret in your repository settings.
+        repo_token: ${{ secrets.GITHUB_TOKEN }} # This is provided by GitHub Actions
+        action: "upload"
+        app_location: "frontend/todolist-ui/dist/todolist-ui/browser" # Output of the Angular build
+        api_location: "" # The API is deployed separately in the previous step
+        output_location: "" # The build output is in app_location

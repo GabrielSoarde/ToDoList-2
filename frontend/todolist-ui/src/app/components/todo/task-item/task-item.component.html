@@ -1,0 +1,94 @@
+<mat-card class="task-item" [class.task-item--completed]="task.isComplete">
+  @if (!isEditing) {
+    <!-- Modo de Exibição -->
+    <mat-card-header class="task-item__header">
+      <mat-checkbox
+        class="task-item__checkbox"
+        [checked]="task.isComplete"
+        (change)="onToggleComplete($event)"
+        [aria-label]="'Marcar como concluída a tarefa: ' + task.title"
+      ></mat-checkbox>
+      <mat-card-title class="task-item__title">{{ task.title }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="task-item__content">
+      @if (task.description) {
+        <p class="task-item__description">{{ task.description }}</p>
+      }
+      <div class="task-item__metadata">
+        @if (task.dueDate) {
+          <span class="task-item__metadata-item">
+            <mat-icon aria-hidden="true">calendar_today</mat-icon>
+            <span>{{ task.dueDate | date:'dd/MM/yyyy' }}</span>
+          </span>
+        }
+        @if (task.priority) {
+          <span class="task-item__metadata-item">
+            <mat-icon aria-hidden="true">priority_high</mat-icon>
+            <span>{{ task.priority }}</span>
+          </span>
+        }
+        @if (task.category) {
+          <span class="task-item__metadata-item">
+            <mat-icon aria-hidden="true">folder</mat-icon>
+            <span>{{ task.category }}</span>
+          </span>
+        }
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="task-item__actions" align="end">
+      <button mat-icon-button color="primary" class="task-item__button task-item__button--edit" (click)="edit.emit(task)" aria-label="Editar tarefa">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" class="task-item__button task-item__button--delete" (click)="delete.emit(task)" aria-label="Excluir tarefa">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+
+  } @else {
+    <!-- Modo de Edição -->
+    <mat-card-content class="task-item__content">
+      <form class="task-item__edit-form" [formGroup]="editTaskForm" (ngSubmit)="onSave()">
+        <mat-form-field class="task-item__form-field">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="title">
+        </mat-form-field>
+
+        <mat-form-field class="task-item__form-field">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="task-item__form-field">
+          <mat-label>Data de Vencimento</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dueDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="task-item__form-field">
+          <mat-label>Prioridade</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option value="Alta">Alta</mat-option>
+            <mat-option value="Média">Média</mat-option>
+            <mat-option value="Baixa">Baixa</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="task-item__form-field">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="category">
+            @for (cat of categories; track cat) {
+              <mat-option [value]="cat">{{ cat }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="task-item__actions" align="end">
+      <button mat-button class="task-item__button task-item__button--cancel" (click)="cancel.emit()">Cancelar</button>
+      <button mat-raised-button color="primary" class="task-item__button task-item__button--save" (click)="onSave()" [disabled]="editTaskForm.invalid">Salvar</button>
+    </mat-card-actions>
+  }
+</mat-card>

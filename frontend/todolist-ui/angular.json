@@ -24,6 +24,7 @@
               }
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.css"
             ]
           },
@@ -39,8 +40,16 @@
               "outputHashing": "all",
               "sourceMap": false,
               "budgets": [
-                { "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" },
-                { "type": "anyComponentStyle", "maximumWarning": "4kB", "maximumError": "8kB" }
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
               ]
             },
             "development": {
@@ -96,11 +105,70 @@
             "outputPath": "dist/todolist-ui/server",
             "tsConfig": "tsconfig.server.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "todolist-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "todolist-ui:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "todolist-ui:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "todolist-ui:serve:development"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "todolist-ui:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "todolist-ui:serve:production"
+            }
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "8f7f8333-0504-4659-b874-fe1bcf38dc5b"
+    "analytics": "8f7f8333-0504-4659-b874-fe1bcf38dc5b",
+    "schematicCollections": [
+      "@cypress/schematic",
+      "angular-eslint",
+      "@schematics/angular"
+    ]
   }
 }

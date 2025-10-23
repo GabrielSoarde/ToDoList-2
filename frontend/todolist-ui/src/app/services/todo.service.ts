@@ -31,7 +31,7 @@ export class ToDoService {
   add(item: { 
   title: string;
   description?: string;
-  dueDate?: Date | null;     
+  dueDate?: string | null;     
   priority?: string | null;
   category?: string | null;
   isComplete?: boolean;
@@ -44,7 +44,7 @@ export class ToDoService {
 update(
   id: number,
   item: { 
-    title: string; 
+    title?: string; 
     dueDate?: string | null;   
     priority?: string; 
     category?: string;

@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TodoList } from './todo-list';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToDoListComponent } from './todo-list.component';
 
-describe('TodoList', () => {
-  let component: TodoList;
-  let fixture: ComponentFixture<TodoList>;
+describe('ToDoListComponent', () => {
+  let component: ToDoListComponent;
+  let fixture: ComponentFixture<ToDoListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TodoList]
+      imports: [ToDoListComponent, HttpClientTestingModule]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(TodoList);
+    
+    fixture = TestBed.createComponent(ToDoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

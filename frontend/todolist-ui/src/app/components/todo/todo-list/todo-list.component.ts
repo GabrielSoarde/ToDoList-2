@@ -1,188 +1,172 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { Component, OnInit, signal, computed, ViewChild, AfterViewInit, Signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToDoService } from '../../../services/todo.service';
-import { ToDoItem } from '../../../models/todo-item.model';
+import { ToDoItem, CreateToDoItemDto } from '../../../models/todo-item.model';
 import { AuthService } from '../../../services/auth.service';
+import { tap } from 'rxjs';
+
+// Child Components
+import { AddTaskFormComponent } from '../add-task-form/add-task-form.component';
+import { TaskFilterComponent } from '../task-filter/task-filter.component';
+import { TaskListComponent } from '../task-list/task-list.component';
+
+// Angular Material Modules
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css'],
+  styleUrl: './todo-list.component.scss',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DatePipe]
+  imports: [
+    CommonModule,
+    AddTaskFormComponent,
+    TaskFilterComponent,
+    TaskListComponent,
+    MatToolbarModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatIconModule,
+  ],
 })
-export class ToDoListComponent implements OnInit {
-  // State as Signals
+export class ToDoListComponent implements OnInit, AfterViewInit {
+  // Referência ao componente de filtro para ler seu estado
+  @ViewChild(TaskFilterComponent) private taskFilterComponent!: TaskFilterComponent;
+
+  // State Signals
   tasks = signal<ToDoItem[]>([]);
-  editingTask = signal<ToDoItem | null>(null);
-  filter = signal<'all' | 'pending' | 'completed'>('all');
-  searchTerm = signal<string>('');
-  selectedCategory = signal<string>('Todas');
+  editingTaskId = signal<number | null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
-  
-  // Forms
-  addTaskForm: FormGroup;
-  editTaskForm: FormGroup;
 
   // Static properties
   categories: string[] = ['Trabalho', 'Pessoal', 'Estudos'];
 
   // Computed Signals for derived state
-  completedCount = computed(() => this.tasks().filter(t => t.isComplete).length);
-  filteredTasks = computed(() => {
-    const allTasks = this.tasks();
-    const currentFilter = this.filter();
-    const currentSearch = this.searchTerm().toLowerCase();
-    const currentCategory = this.selectedCategory();
-
-    return allTasks.filter(task => {
-      if (currentFilter === 'completed' && !task.isComplete) return false;
-      if (currentFilter === 'pending' && task.isComplete) return false;
-      if (currentSearch && !task.title.toLowerCase().includes(currentSearch)) return false;
-      if (currentCategory !== 'Todas' && task.category !== currentCategory) return false;
-      return true;
-    });
-  });
+  completedCount = computed(() => this.tasks().filter((t) => t.isComplete).length);
+  filteredTasks: Signal<ToDoItem[]> = signal([]);
 
   constructor(
-    private router: Router, 
-    private toDoService: ToDoService, 
-    private fb: FormBuilder,
+    private router: Router,
+    private toDoService: ToDoService,
     private authService: AuthService
-  ) {
-    this.addTaskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: [''],
-      dueDate: [''],
-      priority: ['Baixa'],
-      category: ['Pessoal']
-    });
-
-    this.editTaskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: [''],
-      dueDate: [''],
-      priority: [''],
-      category: ['']
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
+  ngAfterViewInit(): void {
+    // Agora que o ViewChild está disponível, podemos criar o computed signal
+    this.filteredTasks = computed(() => {
+      const allTasks = this.tasks();
+      const currentFilter = this.taskFilterComponent.filter();
+      const currentSearch = this.taskFilterComponent.searchTerm().toLowerCase();
+      const currentCategory = this.taskFilterComponent.selectedCategory();
+
+      return allTasks.filter((task) => {
+        if (currentFilter === 'completed' && !task.isComplete) return false;
+        if (currentFilter === 'pending' && task.isComplete) return false;
+        if (currentSearch && !task.title.toLowerCase().includes(currentSearch)) return false;
+        if (currentCategory !== 'Todas' && task.category !== currentCategory) return false;
+        return true;
+      });
+    });
+  }
+
+  // --- Data Loading ---
   loadTasks(): void {
     this.loading.set(true);
     this.error.set(null);
-    
+
     this.toDoService.getAll().subscribe({
       next: (loadedTasks) => {
-        this.tasks.set(loadedTasks.map(t => ({
-          ...t,
-          dueDate: t.dueDate ? t.dueDate.split('T')[0] : undefined
-        })));
+        this.tasks.set(
+          loadedTasks.map((t) => ({
+            ...t,
+            dueDate: t.dueDate ? t.dueDate.split('T')[0] : undefined,
+          }))
+        );
         this.loading.set(false);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.loading.set(false);
         this.error.set(err.message || 'Erro ao carregar tarefas');
-        console.error('Erro ao carregar tarefas:', err);
-      }
+      },
     });
   }
 
-  addTask(): void {
-    if (this.addTaskForm.invalid) {
-      alert('O título da tarefa é obrigatório.');
-      return;
-    }
+  // --- Event Handlers from Child Components ---
 
-    const payload = this.addTaskForm.value;
-    this.toDoService.add(payload).subscribe({
+  handleTaskAdded(dto: CreateToDoItemDto): void {
+    this.toDoService.add(dto).subscribe({
       next: (newTask) => {
-        this.tasks.update(currentTasks => [...currentTasks, newTask]);
-        this.addTaskForm.reset({ priority: 'Baixa', category: 'Pessoal' });
+        this.tasks.update((currentTasks) => [...currentTasks, newTask]);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error.set(err.message || 'Erro ao adicionar tarefa');
-        console.error('Erro ao adicionar tarefa:', err);
-      }
+      },
     });
   }
 
-  startEdit(task: ToDoItem): void {
-    this.editingTask.set(task);
-    this.editTaskForm.setValue({
-      title: task.title,
-      description: task.description ?? '',
-      dueDate: task.dueDate ?? '',
-      priority: task.priority ?? 'Baixa',
-      category: task.category ?? 'Pessoal'
-    });
-  }
-
-  updateTaskOnCompletion(task: ToDoItem, isComplete: boolean) {
-    const payload = { ...task, isComplete };
-    this.toDoService.update(task.id, payload).subscribe({
+  handleToggleComplete(task: ToDoItem): void {
+    this.toDoService.update(task.id, task).subscribe({
       next: () => {
-        this.tasks.update(currentTasks =>
-          currentTasks.map(t => t.id === task.id ? { ...t, isComplete } : t)
+        this.tasks.update((currentTasks) =>
+          currentTasks.map((t) => (t.id === task.id ? { ...t, isComplete: task.isComplete } : t))
         );
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error.set(err.message || 'Erro ao atualizar status da tarefa');
-        console.error('Erro ao atualizar status da tarefa:', err);
-      }
-    });
-  }
-
-  submitEdit(): void {
-    if (this.editTaskForm.invalid || !this.editingTask()) {
-      return;
-    }
-    const originalTask = this.editingTask()!;
-    const updatedValues = this.editTaskForm.value;
-
-    const payload = {
-      ...originalTask,
-      ...updatedValues
-    };
-
-    this.toDoService.update(originalTask.id, payload).subscribe({
-      next: () => {
-        this.tasks.update(currentTasks => 
-          currentTasks.map(t => t.id === originalTask.id ? payload : t)
-        );
-        this.editingTask.set(null);
+        this.loadTasks(); // Recarrega para reverter a mudança otimista
       },
-      error: (err) => {
-        this.error.set(err.message || 'Falha ao atualizar tarefa');
-        console.error('Erro ao atualizar tarefa:', err);
-        alert('Falha ao atualizar tarefa. Verifique os dados.');
-      }
     });
   }
 
-  cancelEdit(): void {
-    this.editingTask.set(null);
-    this.editTaskForm.reset();
+  handleDelete(task: ToDoItem): void {
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+      this.toDoService.delete(task.id).pipe(
+        // O operador tap é ideal para executar efeitos colaterais (como atualizar a UI)
+        // quando um observable é completado, sem alterar o fluxo de dados.
+        tap({
+          complete: () => {
+            this.tasks.update((currentTasks) => currentTasks.filter((t) => t.id !== task.id));
+          },
+          error: (err: any) => {
+            this.error.set(err.message || 'Erro ao deletar tarefa');
+          }
+        })
+      ).subscribe(); // A subscrição ainda é necessária para disparar a chamada HTTP
+    }
   }
 
-  deleteTask(id: number): void {
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      this.toDoService.delete(id).subscribe({
-        next: () => {
-          this.tasks.update(currentTasks => currentTasks.filter(t => t.id !== id));
-        },
-        error: (err) => {
-          this.error.set(err.message || 'Erro ao deletar tarefa');
-          console.error('Erro ao deletar tarefa:', err);
-        }
-      });
-    }
+  handleSave(task: ToDoItem): void {
+    this.toDoService.update(task.id, task).subscribe({
+      next: () => {
+        this.tasks.update((currentTasks) =>
+          currentTasks.map((t) => (t.id === task.id ? task : t))
+        );
+        this.editingTaskId.set(null);
+      },
+      error: (err: any) => {
+        this.error.set(err.message || 'Falha ao atualizar tarefa');
+      },
+    });
+  }
+
+  handleEdit(task: ToDoItem): void {
+    this.editingTaskId.set(task.id);
+  }
+
+  handleCancelEdit(): void {
+    this.editingTaskId.set(null);
   }
 
   logout(): void {

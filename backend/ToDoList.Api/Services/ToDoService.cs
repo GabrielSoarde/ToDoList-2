@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoList.Api.Data;
 using ToDoList.Api.Models;
+using ToDoList.Api.Models.Dtos;
 
 namespace ToDoList.Api.Services
 {
@@ -72,6 +73,35 @@ namespace ToDoList.Api.Services
             if (item == null) return false;
 
             _context.ToDoItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateForUser(int id, string userId, UpdateToDoItemDto dto)
+        {
+            var existingItem = await GetByIdForUser(id, userId);
+            if (existingItem == null)
+            {
+                return false;
+            }
+
+            // Apply updates from DTO
+            if (!string.IsNullOrWhiteSpace(dto.Title))
+            {
+                existingItem.Title = dto.Title;
+            }
+
+            if (dto.IsComplete.HasValue)
+            {
+                existingItem.IsComplete = dto.IsComplete.Value;
+            }
+
+            existingItem.DueDate = dto.DueDate;
+            existingItem.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingItem.Priority : dto.Priority;
+            existingItem.Category = string.IsNullOrWhiteSpace(dto.Category) ? existingItem.Category : dto.Category;
+
+            // Save changes
+            _context.Entry(existingItem).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
         }

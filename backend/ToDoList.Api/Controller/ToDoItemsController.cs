@@ -93,28 +93,16 @@ namespace ToDoList.Api.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
+            {
                 return Unauthorized();
+            }
 
-            // Verifica se a tarefa pertence ao usuário antes de atualizar
-            var existingItem = await _toDoService.GetByIdForUser(id, userId);
-            if (existingItem == null)
-                return NotFound();
+            var success = await _toDoService.UpdateForUser(id, userId, dto);
 
-            // Atualiza os campos editáveis
-            if (!string.IsNullOrWhiteSpace(dto.Title))
-                existingItem.Title = dto.Title;
-
-            if (dto.IsComplete.HasValue)
-                existingItem.IsComplete = dto.IsComplete.Value;
-
-            existingItem.DueDate = dto.DueDate;
-            existingItem.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingItem.Priority : dto.Priority;
-            existingItem.Category = string.IsNullOrWhiteSpace(dto.Category) ? existingItem.Category : dto.Category;
-
-            var updated = await _toDoService.Update(existingItem);
-
-            if (!updated)
-                return BadRequest();
+            if (!success)
+            {
+                return NotFound(); // Or BadRequest, depending on what failure means. NotFound is better if the item didn't exist.
+            }
 
             return NoContent();
         }

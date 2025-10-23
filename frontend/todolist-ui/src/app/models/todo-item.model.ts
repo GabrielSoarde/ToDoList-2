@@ -8,4 +8,12 @@ export interface ToDoItem {
   category?: string;  
   description?: string;
 }
+
+export interface CreateToDoItemDto {
+  title: string;
+  description?: string;
+  dueDate?: string | null;
+  priority?: string | null;
+  category?: string | null;
+}
   
