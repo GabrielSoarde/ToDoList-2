@@ -12,3 +12,8 @@ dist/
 # Pastas de documentação local
 docs/
 agentes/
+ROADMAP.md
+
+# Arquivos de script e automação local
+*.bat
+COMMITS*.md
