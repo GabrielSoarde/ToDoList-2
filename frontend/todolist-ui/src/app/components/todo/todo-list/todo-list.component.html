@@ -6,10 +6,6 @@
   </button>
 </mat-toolbar>
 
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" aria-label="Carregando tarefas"></mat-progress-bar>
-}
-
 <div class="todo-list">
   @if (error()) {
     <mat-card class="todo-list__error">
@@ -24,7 +20,7 @@
       <h2 class="todo-list__summary-title">Resumo</h2>
       <p class="todo-list__summary-count">{{ completedCount() }} de {{ tasks().length }} concluídas</p>
     </div>
-    <app-task-filter [categories]="categories" />
+    <app-task-filter [categories]="categories" (categoryChange)="handleCategoryChange($event)" />
   </div>
 
   <div class="todo-list__main">
@@ -32,17 +28,39 @@
       <app-add-task-form [categories]="categories" (taskAdded)="handleTaskAdded($event)" />
     </div>
     <div class="todo-list__list-container">
-      @if (filteredTasks()) {
-        <app-task-list
-          [tasks]="filteredTasks()"
-          [editingTaskId]="editingTaskId()"
-          [categories]="categories"
-          (toggleComplete)="handleToggleComplete($event)"
-          (delete)="handleDelete($event)"
-          (edit)="handleEdit($event)"
-          (save)="handleSave($event)"
-          (cancel)="handleCancelEdit()"
-        />
+      @if (loading()) {
+        <!-- Skeleton Loader -->
+        @for (i of [1, 2, 3]; track i) {
+          <mat-card class="task-item-skeleton">
+            <div class="skeleton-content">
+              <ngx-skeleton-loader count="1" appearance="circle" [theme]="{ width: '24px', height: '24px' }"></ngx-skeleton-loader>
+              <div class="skeleton-text">
+                <ngx-skeleton-loader count="1" appearance="line" [theme]="{ width: '60%' }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader count="1" appearance="line" [theme]="{ width: '40%' }"></ngx-skeleton-loader>
+              </div>
+            </div>
+          </mat-card>
+        }
+      } @else {
+        <!-- Actual Task List -->
+        @if (filteredTasks().length > 0) {
+          <app-task-list
+            [tasks]="filteredTasks()"
+            [editingTaskId]="editingTaskId()"
+            [categories]="categories"
+            (toggleComplete)="handleToggleComplete($event)"
+            (delete)="handleDelete($event)"
+            (edit)="handleEdit($event)"
+            (save)="handleSave($event)"
+            (cancel)="handleCancelEdit()"
+          />
+        } @else {
+          <div class="no-tasks-message">
+            <mat-icon>inbox</mat-icon>
+            <p>Nenhuma tarefa encontrada.</p>
+            <p class="subtle-text">Que tal adicionar uma nova para começar?</p>
+          </div>
+        }
       }
     </div>
   </div>

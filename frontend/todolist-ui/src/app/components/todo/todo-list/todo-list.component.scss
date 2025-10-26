@@ -60,6 +60,57 @@
   }
 }
 
+/* Skeleton styles */
+.task-item-skeleton {
+  display: block;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+  .skeleton-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .skeleton-text {
+    flex: 1;
+  }
+}
+
+/* No tasks message styles */
+.no-tasks-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: #6c757d;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .subtle-text {
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 960px) {
   .todo-list__main {
