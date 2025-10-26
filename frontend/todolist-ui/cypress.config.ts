@@ -1,7 +1,9 @@
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
-  
+  env: {
+    apiUrl: '/api'
+  },
   e2e: {
     'baseUrl': 'http://localhost:4200'
   },
