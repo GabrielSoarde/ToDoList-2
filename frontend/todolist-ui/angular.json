@@ -63,7 +63,8 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "todolist-ui:build:development"
+            "buildTarget": "todolist-ui:build:development",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

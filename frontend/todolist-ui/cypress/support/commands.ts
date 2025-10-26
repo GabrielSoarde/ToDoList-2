@@ -25,6 +25,39 @@ Cypress.Commands.add('loginByUI', (email, password) => {
   cy.get('button[type="submit"]').click();
 });
 
+Cypress.Commands.add('registerByApi', (email, password) => {
+  return cy.request('POST', `${Cypress.env('apiUrl')}/Auth/register`, {
+    email,
+    password,
+    confirmPassword: password, // A confirmação é a mesma senha
+  });
+});
+
+Cypress.Commands.add('loginByApi', (email, password) => {
+  return cy.request('POST', `${Cypress.env('apiUrl')}/Auth/login`, {
+    email,
+    password,
+  }).then((response) => {
+    expect(response.status).to.eq(200);
+    // Retorna o corpo da resposta para que o token possa ser acessado
+    return response.body;
+  });
+});
+
+Cypress.Commands.add('createTaskByApi', (task, token) => {
+  return cy.request({
+    method: 'POST',
+    url: `${Cypress.env('apiUrl')}/ToDoItems`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: task,
+  }).then((response) => {
+    expect(response.status).to.eq(201); // 201 Created
+    return response.body;
+  });
+});
+
 Cypress.Commands.add('registerByUI', (email, password) => {
   cy.visit('/');
   // Clica para mudar para o modo de registro
@@ -36,4 +69,12 @@ Cypress.Commands.add('registerByUI', (email, password) => {
   cy.get('input[formcontrolname="password"]').type(password);
   cy.get('input[formcontrolname="confirmPassword"]').type(password); // Usa a mesma senha para confirmar
   cy.get('button[type="submit"]').click();
+});
+
+Cypress.Commands.add('registerByApi', (email, password) => {
+  cy.request('POST', '/api/Auth/register', {
+    email,
+    password,
+    confirmPassword: password,
+  });
 });
