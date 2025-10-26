@@ -92,8 +92,8 @@ Para executar a aplicação, você precisará ter o backend e o frontend rodando
 
 ## 📂 Estrutura do Projeto
 
-Para uma visão detalhada da organização das pastas e da arquitetura, consulte o nosso [Guia de Estrutura do Projeto](docs/01-project-structure.md).
+Para uma visão detalhada da organização das pastas e da arquitetura, consulte o nosso [Guia de Estrutura do Projeto](01-project-structure.md).
 
 ## 🤝 Como Contribuir
 
-Estamos abertos a contribuições! Por favor, leia nossas [Diretrizes de Contribuição](docs/03-git-flow.md) para entender nosso fluxo de trabalho e padrões de código.
+Estamos abertos a contribuições! Por favor, leia nossas [Diretrizes de Contribuição](03-git-flow.md) para entender nosso fluxo de trabalho e padrões de código.
