@@ -15,11 +15,13 @@ namespace ToDoList.Api.Controllers
     [Route("api/[controller]")]
     public class ToDoItemsController : ControllerBase
     {
-        private readonly IToDoService _toDoService; 
+        private readonly IToDoService _toDoService;
+        private readonly ILogger<ToDoItemsController> _logger; // Adicionado
 
-        public ToDoItemsController(IToDoService toDoService)
+        public ToDoItemsController(IToDoService toDoService, ILogger<ToDoItemsController> logger) // Adicionado
         {
             _toDoService = toDoService;
+            _logger = logger; // Adicionado
         }
 
         // GET: api/ToDoItems - Retorna apenas as tarefas do usuário autenticado
@@ -73,6 +75,9 @@ namespace ToDoList.Api.Controllers
             };
 
             var createdItem = await _toDoService.Create(item);
+
+            // Log da criação da tarefa
+            _logger.LogInformation("New task created. TaskId: {TaskId}, UserId: {UserId}", createdItem.Id, userId);
 
             return CreatedAtAction(nameof(GetToDoItem), new { id = createdItem.Id }, new ToDoItemDto
             {
