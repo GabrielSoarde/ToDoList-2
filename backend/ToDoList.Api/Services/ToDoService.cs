@@ -16,16 +16,34 @@ namespace ToDoList.Api.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<ToDoItem>> GetAll()
-        {
-            return await _context.ToDoItems.ToListAsync();
-        }
-
         public async Task<IEnumerable<ToDoItem>> GetAllForUser(string userId)
         {
-            return await _context.ToDoItems
+            var tasks = await _context.ToDoItems
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
+
+            // Mapeia a prioridade para um valor numérico para ordenação
+            int GetPriorityValue(string? priority) => priority switch
+            {
+                "Alta" => 3,
+                "Média" => 2,
+                "Baixa" => 1,
+                _ => 0
+            };
+
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            // Ordena as tarefas com a lógica correta e simplificada
+            var sortedTasks = tasks
+                // 1. Tarefas concluídas vão para o final
+                .OrderBy(t => t.IsComplete)
+                // 2. Ordena pela data de vencimento (as mais próximas primeiro, tarefas sem data ficam por último)
+                .ThenBy(t => t.DueDate.HasValue ? t.DueDate.Value : DateOnly.MaxValue)
+                // 3. Como desempate, ordena pela prioridade (as mais altas primeiro)
+                .ThenByDescending(t => GetPriorityValue(t.Priority))
+                .ToList();
+
+            return sortedTasks;
         }
 
         public async Task<ToDoItem?> GetById(int id)

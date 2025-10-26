@@ -6,7 +6,6 @@ namespace ToDoList.Api.Services
 {
     public interface IToDoService
     {
-        Task<IEnumerable<ToDoItem>> GetAll();
         Task<IEnumerable<ToDoItem>> GetAllForUser(string userId);
         Task<ToDoItem?> GetById(int id);
         Task<ToDoItem?> GetByIdForUser(int id, string userId);
