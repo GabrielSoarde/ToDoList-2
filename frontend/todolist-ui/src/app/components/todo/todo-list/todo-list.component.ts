@@ -18,6 +18,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-todo-list',
@@ -34,6 +38,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressBarModule,
     MatCardModule,
     MatIconModule,
+    MatDialogModule, // Adicionado
+    MatSnackBarModule, // Adicionado
+    NgxSkeletonLoaderModule, // Adicionado
   ],
 })
 export class ToDoListComponent implements OnInit, AfterViewInit {
@@ -56,7 +63,9 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private toDoService: ToDoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog, // Adicionado
+    private snackBar: MatSnackBar // Adicionado
   ) {}
 
   ngOnInit(): void {
@@ -67,16 +76,19 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
     // Agora que o ViewChild está disponível, podemos criar o computed signal
     this.filteredTasks = computed(() => {
       const allTasks = this.tasks();
+      // Certifica-se de que o componente filho está disponível
+      if (!this.taskFilterComponent) {
+        return allTasks;
+      }
       const currentFilter = this.taskFilterComponent.filter();
       const currentSearch = this.taskFilterComponent.searchTerm().toLowerCase();
       const currentCategory = this.taskFilterComponent.selectedCategory();
 
       return allTasks.filter((task) => {
-        if (currentFilter === 'completed' && !task.isComplete) return false;
-        if (currentFilter === 'pending' && task.isComplete) return false;
-        if (currentSearch && !task.title.toLowerCase().includes(currentSearch)) return false;
-        if (currentCategory !== 'Todas' && task.category !== currentCategory) return false;
-        return true;
+        const statusMatch = currentFilter === 'all' || (currentFilter === 'completed' && task.isComplete) || (currentFilter === 'pending' && !task.isComplete);
+        const searchMatch = !currentSearch || task.title.toLowerCase().includes(currentSearch);
+        const categoryMatch = currentCategory === 'Todas' || task.category === currentCategory;
+        return statusMatch && searchMatch && categoryMatch;
       });
     });
   }
@@ -107,13 +119,18 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
 
   handleTaskAdded(dto: CreateToDoItemDto): void {
     this.toDoService.add(dto).subscribe({
-      next: (newTask) => {
-        this.tasks.update((currentTasks) => [...currentTasks, newTask]);
+      next: () => {
+        this.snackBar.open('Tarefa adicionada com sucesso!', 'Fechar', { duration: 3000 });
+        this.loadTasks(); // Recarrega a lista para obter a ordenação correta
       },
       error: (err: any) => {
         this.error.set(err.message || 'Erro ao adicionar tarefa');
       },
     });
+  }
+
+  handleCategoryChange(category: string): void {
+    this.taskFilterComponent.selectedCategory.set(category);
   }
 
   handleToggleComplete(task: ToDoItem): void {
@@ -131,20 +148,28 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
   }
 
   handleDelete(task: ToDoItem): void {
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-      this.toDoService.delete(task.id).pipe(
-        // O operador tap é ideal para executar efeitos colaterais (como atualizar a UI)
-        // quando um observable é completado, sem alterar o fluxo de dados.
-        tap({
-          complete: () => {
-            this.tasks.update((currentTasks) => currentTasks.filter((t) => t.id !== task.id));
-          },
-          error: (err: any) => {
-            this.error.set(err.message || 'Erro ao deletar tarefa');
-          }
-        })
-      ).subscribe(); // A subscrição ainda é necessária para disparar a chamada HTTP
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmar Exclusão',
+        message: `Tem certeza que deseja excluir a tarefa "${task.title}"?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.toDoService.delete(task.id).pipe(
+          tap({
+            complete: () => {
+              this.tasks.update((currentTasks) => currentTasks.filter((t) => t.id !== task.id));
+              this.snackBar.open('Tarefa excluída com sucesso!', 'Fechar', { duration: 3000 });
+            },
+            error: (err: any) => {
+              this.error.set(err.message || 'Erro ao deletar tarefa');
+            }
+          })
+        ).subscribe();
+      }
+    });
   }
 
   handleSave(task: ToDoItem): void {

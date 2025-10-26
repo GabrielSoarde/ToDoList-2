@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -48,7 +48,7 @@ import { MatIconModule } from '@angular/material/icon';
 
       <mat-form-field appearance="outline" class="category-select">
         <mat-label>Categoria</mat-label>
-        <mat-select [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)">
+        <mat-select [ngModel]="selectedCategory()" (ngModelChange)="categoryChange.emit($event)">
           <mat-option value="Todas">Todas as Categorias</mat-option>
           @for (cat of categories; track cat) {
             <mat-option [value]="cat">{{ cat }}</mat-option>
@@ -66,6 +66,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class TaskFilterComponent {
   @Input() categories: string[] = [];
+  @Output() categoryChange = new EventEmitter<string>();
 
   // State is managed within this component
   filter = signal<'all' | 'pending' | 'completed'>('all');
