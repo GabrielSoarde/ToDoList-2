@@ -44,8 +44,10 @@ export class TaskItemComponent implements OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   editTaskForm: FormGroup;
+  minDate: Date; // Para o datepicker de edição
 
   constructor(private fb: FormBuilder) {
+    this.minDate = new Date(); // Impede datas passadas na edição
     this.editTaskForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -53,6 +55,33 @@ export class TaskItemComponent implements OnChanges {
       priority: [''],
       category: ['']
     });
+  }
+
+  // Verifica o status de vencimento da tarefa
+  getDueStatus(): 'due-today' | 'due-soon' | 'none' {
+    if (!this.task.dueDate) {
+      return 'none';
+    }
+
+    const today = new Date();
+    const dueDate = new Date(this.task.dueDate);
+    today.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+
+    const diffTime = dueDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) {
+      return 'due-today'; // Atrasado conta como "vence hoje" para fins de estilo
+    }
+    if (diffDays === 0) {
+      return 'due-today';
+    }
+    if (diffDays <= 7) {
+      return 'due-soon';
+    }
+
+    return 'none';
   }
 
   ngOnChanges(changes: SimpleChanges): void {

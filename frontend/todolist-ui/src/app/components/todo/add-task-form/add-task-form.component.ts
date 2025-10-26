@@ -55,7 +55,7 @@ import { MatCardModule } from '@angular/material/card';
 
           <mat-form-field appearance="fill">
             <mat-label>Data de Vencimento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="dueDate">
+            <input matInput [matDatepicker]="picker" formControlName="dueDate" [min]="minDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -89,8 +89,10 @@ export class AddTaskFormComponent {
   @Output() taskAdded = new EventEmitter<CreateToDoItemDto>();
 
   addTaskForm: FormGroup;
+  minDate: Date;
 
   constructor(private fb: FormBuilder) {
+    this.minDate = new Date();
     this.addTaskForm = this.fb.group({
       title: ['', Validators.required],
       description: [null],
