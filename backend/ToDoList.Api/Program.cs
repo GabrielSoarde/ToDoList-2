@@ -123,6 +123,13 @@ try
     app.UseAuthorization();
     app.MapControllers();
 
+    // Aplica as migrações do banco de dados na inicialização
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ToDoListContext>();
+        dbContext.Database.Migrate();
+    }
+
     app.Run();
 }
 catch (Exception ex)
