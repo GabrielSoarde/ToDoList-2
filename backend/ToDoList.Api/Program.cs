@@ -35,7 +35,14 @@ try
     {
         options.AddPolicy(MyAllowSpecificOrigins, policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            var allowedOrigins = new List<string> { "http://localhost:4200" };
+            var productionOrigin = builder.Configuration["FrontendURL"];
+            if (!string.IsNullOrEmpty(productionOrigin))
+            {
+                allowedOrigins.Add(productionOrigin);
+            }
+
+            policy.WithOrigins(allowedOrigins.ToArray())
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();

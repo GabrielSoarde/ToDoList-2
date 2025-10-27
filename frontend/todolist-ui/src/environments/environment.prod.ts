@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:5269/api' // TODO: Altere para a URL de produção real
+  apiUrl: 'https://SUA_API_AQUI.onrender.com/api' // URL da API em produção
 };

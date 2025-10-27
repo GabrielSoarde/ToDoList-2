@@ -34,7 +34,7 @@ jobs:
       run: dotnet build backend/ToDoList.Api/ToDoList.Api.csproj --no-restore
 
     - name: Test Backend
-      run: echo "Backend tests not implemented yet"
+      run: dotnet test
 
     # Node.js Frontend Steps
     - name: Setup Node.js 20.x
