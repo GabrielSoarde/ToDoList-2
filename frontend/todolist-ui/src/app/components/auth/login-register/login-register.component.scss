@@ -1,10 +1,10 @@
 .login-register {
-  width: 100%;
   max-width: 400px;
   padding: 30px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: auto; /* Adicionado para centralizar o componente */
 
   &__title {
     text-align: center;

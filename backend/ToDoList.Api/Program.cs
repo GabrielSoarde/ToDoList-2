@@ -24,7 +24,8 @@ try
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
-        .WriteTo.Console());
+        .WriteTo.Console()
+        .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day));
 
     // ---------------------------
     // 1️⃣ Configuração dos Serviços

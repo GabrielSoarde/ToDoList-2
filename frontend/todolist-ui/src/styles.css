@@ -23,9 +23,17 @@ body {
 app-root > main {
     display: flex;
     justify-content: center;
+    align-items: center; /* Adicionado para centralizar verticalmente */
     padding: 40px 20px;
     min-height: 100vh;
     box-sizing: border-box;
+}
+
+/* Media Query para telas menores */
+@media (max-width: 768px) {
+    app-root > main {
+        padding: 20px 10px;
+    }
 }
 
 h1, h2, h3 {
