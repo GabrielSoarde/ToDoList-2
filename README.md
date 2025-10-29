@@ -2,7 +2,7 @@
 
 Uma aplicação de lista de tarefas moderna, full-stack, construída com C#/.NET no backend e Angular no frontend.
 
-![Visão Geral da Aplicação](https://raw.githubusercontent.com/GabrielSoarde/ToDoList-2/main/1.png)
+![Visão Geral da Aplicação](https://github.com/GabrielSoarde/ToDoList-2/blob/main/1.png?raw=true)
 
 ## 🚀 Visão Geral
 
@@ -23,7 +23,7 @@ A aplicação vai além de um simples CRUD, focando em uma experiência de usuá
 
 | Fluxo Principal (Criar, Editar, Excluir) | Filtros e Busca em Ação |
 | :--------------------------------------: | :---------------------------: |
-| ![GIF do Fluxo Principal](https://raw.githubusercontent.com/GabrielSoarde/ToDoList-2/main/1.gif)         | ![GIF dos Filtros](https://raw.githubusercontent.com/GabrielSoarde/ToDoList-2/main/2.gif)     |
+| ![GIF do Fluxo Principal](https://github.com/GabrielSoarde/ToDoList-2/blob/main/1.gif?raw=true)         | ![GIF dos Filtros](https://github.com/GabrielSoarde/ToDoList-2/blob/main/2.gif?raw=true)     |
 
 ## 🛠️ Tech Stack
 
