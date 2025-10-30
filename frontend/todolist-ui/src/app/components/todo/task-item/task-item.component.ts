@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToDoItem } from '../../../models/todo-item.model';
 
@@ -19,7 +19,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DatePipe,
     MatCardModule,
     MatCheckboxModule,
     MatButtonModule,
@@ -44,36 +43,40 @@ export class TaskItemComponent implements OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   editTaskForm: FormGroup;
-  minDate: Date; // Para o datepicker de edição
+  minDate: Date;
 
   constructor(private fb: FormBuilder) {
-    this.minDate = new Date(); // Impede datas passadas na edição
+    this.minDate = new Date();
     this.editTaskForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      dueDate: [''],
+      dueDateTime: [null],
+      dueTime: [null],
       priority: [''],
-      category: ['']
+      category: [''],
     });
   }
 
-  // Verifica o status de vencimento da tarefa
-  getDueStatus(): 'due-today' | 'due-soon' | 'none' {
-    if (!this.task.dueDate) {
+  getDueStatus(): 'overdue' | 'due-today' | 'due-soon' | 'none' {
+    if (!this.task.dueDateTime) {
       return 'none';
     }
 
-    const today = new Date();
-    const dueDate = new Date(this.task.dueDate);
-    today.setHours(0, 0, 0, 0);
-    dueDate.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const due = new Date(this.task.dueDateTime);
 
-    const diffTime = dueDate.getTime() - today.getTime();
+    // Compare full date and time
+    if (due.getTime() < now.getTime()) {
+      return 'overdue';
+    }
+
+    // Check if due today (ignoring time for 'due-today' status, but considering it for 'overdue')
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const dueDayStart = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+
+    const diffTime = dueDayStart.getTime() - todayStart.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays < 0) {
-      return 'due-today'; // Atrasado conta como "vence hoje" para fins de estilo
-    }
     if (diffDays === 0) {
       return 'due-today';
     }
@@ -85,13 +88,23 @@ export class TaskItemComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['task']) {
+    if (changes['task'] && this.task) {
+      let initialDueDate: Date | null = null;
+      let initialDueTime: string | null = null;
+
+      if (this.task.dueDateTime) {
+        const taskDate = new Date(this.task.dueDateTime);
+        initialDueDate = taskDate;
+        initialDueTime = taskDate.toTimeString().slice(0, 5); // HH:mm
+      }
+
       this.editTaskForm.setValue({
         title: this.task.title,
         description: this.task.description ?? '',
-        dueDate: this.task.dueDate ?? '',
+        dueDateTime: initialDueDate,
+        dueTime: initialDueTime,
         priority: this.task.priority ?? 'Baixa',
-        category: this.task.category ?? 'Pessoal'
+        category: this.task.category ?? 'Pessoal',
       });
     }
   }
@@ -106,10 +119,22 @@ export class TaskItemComponent implements OnChanges {
     }
 
     const formValue = this.editTaskForm.value;
+    let dueDateTime: string | null = null;
+
+    if (formValue.dueDateTime) {
+      const date = new Date(formValue.dueDateTime);
+      if (formValue.dueTime) {
+        const [hours, minutes] = formValue.dueTime.split(':').map(Number);
+        date.setHours(hours, minutes);
+      }
+      dueDateTime = date.toISOString();
+    }
+
     const updatedTask = {
       ...this.task,
       ...formValue,
-      dueDate: formValue.dueDate ? new Date(formValue.dueDate).toISOString().split('T')[0] : null
+      dueDateTime: dueDateTime,
+      dueDate: undefined, // Ensure dueDate is not sent
     };
 
     this.save.emit(updatedTask);

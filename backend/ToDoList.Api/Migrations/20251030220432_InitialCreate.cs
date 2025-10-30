@@ -62,7 +62,7 @@ namespace ToDoList.Api.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     IsComplete = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DueDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    DueDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Priority = table.Column<string>(type: "text", nullable: true),
                     Category = table.Column<string>(type: "text", nullable: true)
                 },

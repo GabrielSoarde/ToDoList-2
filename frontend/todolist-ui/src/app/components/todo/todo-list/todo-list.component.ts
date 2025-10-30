@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToDoService } from '../../../services/todo.service';
 import { ToDoItem, CreateToDoItemDto } from '../../../models/todo-item.model';
 import { AuthService } from '../../../services/auth.service';
+import { NotificationService } from '../../../services/notification.service';
 import { tap } from 'rxjs';
 
 // Child Components
@@ -65,7 +66,8 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
     private toDoService: ToDoService,
     private authService: AuthService,
     private dialog: MatDialog, // Adicionado
-    private snackBar: MatSnackBar // Adicionado
+    private snackBar: MatSnackBar, // Adicionado
+    private notificationService: NotificationService // Adicionado
   ) {}
 
   ngOnInit(): void {
@@ -100,13 +102,9 @@ export class ToDoListComponent implements OnInit, AfterViewInit {
 
     this.toDoService.getAll().subscribe({
       next: (loadedTasks) => {
-        this.tasks.set(
-          loadedTasks.map((t) => ({
-            ...t,
-            dueDate: t.dueDate ? t.dueDate.split('T')[0] : undefined,
-          }))
-        );
+        this.tasks.set(loadedTasks);
         this.loading.set(false);
+        this.notificationService.checkAndNotify(loadedTasks);
       },
       error: (err: any) => {
         this.loading.set(false);

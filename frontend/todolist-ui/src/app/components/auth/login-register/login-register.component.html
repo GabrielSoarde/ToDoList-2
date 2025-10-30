@@ -1,5 +1,5 @@
 <div class="login-register">
-  <h2 class="login-register__title">{{ isLoginMode ? 'Login' : 'Registrar' }}</h2>
+  <h2 class="login-register__title">{{ isLoginMode ? 'Entrar' : 'Cadastrar' }}</h2>
 
   <!-- Mensagem de erro ou sucesso -->
   @if (errorMessage) {
@@ -47,6 +47,6 @@
 
   <p class="login-register__toggle-text">
     {{ isLoginMode ? 'Não tem conta?' : 'Já tem conta?' }}
-    <a class="login-register__toggle-link" (click)="toggleMode()">{{ isLoginMode ? 'Crie uma agora' : 'Faça login' }}</a>
+    <a class="login-register__toggle-link" (click)="toggleMode()">{{ isLoginMode ? 'Crie uma agora' : 'Entrar' }}</a>
   </p>
 </div>

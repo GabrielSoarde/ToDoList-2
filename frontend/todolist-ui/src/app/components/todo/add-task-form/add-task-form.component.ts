@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CreateToDoItemDto } from '../../../models/todo-item.model';
+import { CreateToDoItemDto, ToDoItem } from '../../../models/todo-item.model';
 
 // Angular Material Modules
 import { MatInputModule } from '@angular/material/input';
@@ -55,9 +55,14 @@ import { MatCardModule } from '@angular/material/card';
 
           <mat-form-field appearance="fill">
             <mat-label>Data de Vencimento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="dueDate" [min]="minDate">
+            <input matInput [matDatepicker]="picker" formControlName="dueDateTime" [min]="minDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Hora de Vencimento (HH:mm)</mat-label>
+            <input matInput type="time" formControlName="dueTime">
           </mat-form-field>
 
           <mat-form-field appearance="fill">
@@ -96,9 +101,10 @@ export class AddTaskFormComponent {
     this.addTaskForm = this.fb.group({
       title: ['', Validators.required],
       description: [null],
-      dueDate: [null],
+      dueDateTime: [null],
+      dueTime: [null],
       priority: ['Baixa'],
-      category: ['Pessoal']
+      category: ['Pessoal'],
     });
   }
 
@@ -108,19 +114,31 @@ export class AddTaskFormComponent {
     }
 
     const formValue = this.addTaskForm.value;
+    let dueDateTime: string | null = null;
+
+    if (formValue.dueDateTime) {
+      const date = new Date(formValue.dueDateTime);
+      if (formValue.dueTime) {
+        const [hours, minutes] = formValue.dueTime.split(':').map(Number);
+        date.setHours(hours, minutes);
+      }
+      dueDateTime = date.toISOString();
+    }
+
     const dto: CreateToDoItemDto = {
       ...formValue,
-      // Formata a data para AAAA-MM-DD para garantir compatibilidade com o backend
-      dueDate: formValue.dueDate ? new Date(formValue.dueDate).toISOString().split('T')[0] : null
+      dueDateTime: dueDateTime,
+      dueDate: undefined, // Remove dueDate as it's replaced by dueDateTime
     };
 
     this.taskAdded.emit(dto);
     this.addTaskForm.reset({
       title: '',
       description: null,
-      dueDate: null,
+      dueDateTime: null,
+      dueTime: null,
       priority: 'Baixa',
-      category: 'Pessoal'
+      category: 'Pessoal',
     });
   }
 }

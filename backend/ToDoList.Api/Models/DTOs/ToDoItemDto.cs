@@ -9,7 +9,7 @@
         public DateTime CreatedAt { get; set; }
 
         // Extras
-        public DateOnly? DueDate { get; set; }
+        public DateTime? DueDateTime { get; set; }
         public string? Priority { get; set; }
         public string? Category { get; set; }
     }

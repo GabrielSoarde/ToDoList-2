@@ -68,7 +68,7 @@ namespace ToDoList.Api.Controllers
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                DueDate = dto.DueDate,
+                DueDateTime = dto.DueDateTime,
                 Priority = dto.Priority,
                 Category = dto.Category,
                 UserId = userId // Corrigido para usar o ID do usuário
@@ -86,7 +86,7 @@ namespace ToDoList.Api.Controllers
                 Description = createdItem.Description,
                 IsComplete = createdItem.IsComplete,
                 CreatedAt = createdItem.CreatedAt,
-                DueDate = createdItem.DueDate,
+                DueDateTime = createdItem.DueDateTime,
                 Priority = createdItem.Priority,
                 Category = createdItem.Category
             });

@@ -1,4 +1,4 @@
-<mat-card class="task-item" [class.task-item--completed]="task.isComplete" [class.task-item--due-today]="getDueStatus() === 'due-today' && !task.isComplete" [class.task-item--due-soon]="getDueStatus() === 'due-soon' && !task.isComplete">
+<mat-card class="task-item" [class.task-item--completed]="task.isComplete" [class.task-item--overdue]="getDueStatus() === 'overdue' && !task.isComplete" [class.task-item--due-today]="getDueStatus() === 'due-today' && !task.isComplete" [class.task-item--due-soon]="getDueStatus() === 'due-soon' && !task.isComplete">
   @if (!isEditing) {
     <!-- MODO DE VISUALIZAÇÃO -->
     <mat-card-header>
@@ -10,9 +10,12 @@
     <mat-card-content class="task-item__content">
       <p>{{ task.description }}</p>
       <div class="task-item__meta">
-        @if (task.dueDate) {
+        @if (task.dueDateTime) {
           <span class="meta-item">
             @switch (getDueStatus()) {
+              @case ('overdue') {
+                <mat-icon class="due-icon-overdue">error</mat-icon>
+              }
               @case ('due-today') {
                 <mat-icon class="due-icon-today">warning</mat-icon>
               }
@@ -23,7 +26,7 @@
                 <mat-icon>calendar_today</mat-icon>
               }
             }
-            {{ task.dueDate | date: 'dd/MM/yyyy' }}
+            {{ task.dueDateTime | date: 'dd/MM/yyyy HH:mm' }}
           </span>
         }
         @if (task.priority) {
@@ -48,6 +51,7 @@
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>
+
   } @else {
     <!-- MODO DE EDIÇÃO -->
     <mat-card-content>
@@ -64,9 +68,14 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Data de Vencimento</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="dueDate" [min]="minDate">
+          <input matInput [matDatepicker]="picker" formControlName="dueDateTime" [min]="minDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Hora de Vencimento (HH:mm)</mat-label>
+          <input matInput type="time" formControlName="dueTime">
         </mat-form-field>
 
         <mat-form-field appearance="fill">

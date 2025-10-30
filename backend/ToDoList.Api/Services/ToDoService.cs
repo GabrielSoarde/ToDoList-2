@@ -31,14 +31,11 @@ namespace ToDoList.Api.Services
                 _ => 0
             };
 
-            var today = DateOnly.FromDateTime(DateTime.UtcNow);
-
-            // Ordena as tarefas com a lógica correta e simplificada
             var sortedTasks = tasks
                 // 1. Tarefas concluídas vão para o final
                 .OrderBy(t => t.IsComplete)
                 // 2. Ordena pela data de vencimento (as mais próximas primeiro, tarefas sem data ficam por último)
-                .ThenBy(t => t.DueDate.HasValue ? t.DueDate.Value : DateOnly.MaxValue)
+                .ThenBy(t => t.DueDateTime.HasValue ? t.DueDateTime.Value : DateTime.MaxValue)
                 // 3. Como desempate, ordena pela prioridade (as mais altas primeiro)
                 .ThenByDescending(t => GetPriorityValue(t.Priority))
                 .ToList();
@@ -114,7 +111,7 @@ namespace ToDoList.Api.Services
                 existingItem.IsComplete = dto.IsComplete.Value;
             }
 
-            existingItem.DueDate = dto.DueDate;
+            existingItem.DueDateTime = dto.DueDateTime;
             existingItem.Priority = string.IsNullOrWhiteSpace(dto.Priority) ? existingItem.Priority : dto.Priority;
             existingItem.Category = string.IsNullOrWhiteSpace(dto.Category) ? existingItem.Category : dto.Category;
 

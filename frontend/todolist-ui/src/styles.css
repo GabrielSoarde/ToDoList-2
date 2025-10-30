@@ -36,6 +36,7 @@ app-root > main {
     }
 }
 
+
 h1, h2, h3 {
     color: #343a40;
     margin-top: 0;
@@ -68,3 +69,24 @@ button:disabled {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Custom MatSnackBar styles */
+.mat-mdc-snack-bar-container.info {
+  --mdc-snackbar-container-color: #2196F3; /* Blue */
+  --mdc-snackbar-supporting-text-color: white;
+}
+
+.mat-mdc-snack-bar-container.primary {
+  --mdc-snackbar-container-color: #3F51B5; /* Indigo */
+  --mdc-snackbar-supporting-text-color: white;
+}
+
+.mat-mdc-snack-bar-container.accent {
+  --mdc-snackbar-container-color: #FFC107; /* Amber */
+  --mdc-snackbar-supporting-text-color: black;
+}
+
+.mat-mdc-snack-bar-container.warn {
+  --mdc-snackbar-container-color: #F44336; /* Red */
+  --mdc-snackbar-supporting-text-color: white;
+}

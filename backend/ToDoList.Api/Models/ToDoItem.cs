@@ -16,7 +16,7 @@
         // 🚀 NOVOS CAMPOS V1.2
         // ================================
         
-        public DateOnly? DueDate { get; set; }
+        public DateTime? DueDateTime { get; set; }
         
         public string? Priority { get; set; }
         

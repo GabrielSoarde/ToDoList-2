@@ -1,0 +1,401 @@
+2025-10-30 16:30:12.710 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 16:30:12.742 -03:00 [INF] Shut down complete
+2025-10-30 16:30:31.965 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 16:30:31.992 -03:00 [INF] Shut down complete
+2025-10-30 16:30:47.836 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 16:30:47.861 -03:00 [INF] Shut down complete
+2025-10-30 16:41:39.225 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 16:41:39.248 -03:00 [INF] Shut down complete
+2025-10-30 16:41:58.952 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 16:41:58.977 -03:00 [INF] Shut down complete
+2025-10-30 17:57:01.259 -03:00 [INF] Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 17:57:01.291 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-10-30 17:57:01.343 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 17:57:01.389 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 17:57:01.392 -03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-10-30 17:57:01.401 -03:00 [INF] No migrations were applied. The database is already up to date.
+2025-10-30 17:57:01.415 -03:00 [INF] User profile is available. Using 'C:\Users\Gaabriel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-10-30 17:57:01.459 -03:00 [INF] Now listening on: http://localhost:5269
+2025-10-30 17:57:01.461 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-10-30 17:57:01.463 -03:00 [INF] Hosting environment: Development
+2025-10-30 17:57:01.463 -03:00 [INF] Content root path: C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api
+2025-10-30 18:01:38.849 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - null null
+2025-10-30 18:01:38.861 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-10-30 18:01:38.875 -03:00 [INF] CORS policy execution successful.
+2025-10-30 18:01:38.880 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - 204 null null 31.5091ms
+2025-10-30 18:01:38.887 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5269/api/ToDoItems - null null
+2025-10-30 18:01:38.896 -03:00 [INF] CORS policy execution successful.
+2025-10-30 18:01:38.955 -03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 21:01:38'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-10-30 18:01:38.962 -03:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 21:01:38'.
+2025-10-30 18:01:38.969 -03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-10-30 18:01:38.973 -03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2025-10-30 18:01:38.975 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5269/api/ToDoItems - 401 0 null 88.1564ms
+2025-10-30 18:03:32.395 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - null null
+2025-10-30 18:03:32.398 -03:00 [INF] CORS policy execution successful.
+2025-10-30 18:03:32.399 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - 204 null null 3.6991ms
+2025-10-30 18:03:32.401 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5269/api/ToDoItems - null null
+2025-10-30 18:03:32.403 -03:00 [INF] CORS policy execution successful.
+2025-10-30 18:03:32.406 -03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 21:03:32'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-10-30 18:03:32.408 -03:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 21:03:32'.
+2025-10-30 18:03:32.409 -03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-10-30 18:03:32.410 -03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2025-10-30 18:03:32.411 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5269/api/ToDoItems - 401 0 null 10.0763ms
+2025-10-30 18:40:08.587 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 18:40:08.611 -03:00 [INF] Shut down complete
+2025-10-30 18:40:22.586 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 18:40:22.609 -03:00 [INF] Shut down complete
+2025-10-30 18:40:40.595 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 18:40:40.621 -03:00 [INF] Shut down complete
+2025-10-30 18:40:54.698 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 18:40:54.721 -03:00 [INF] Shut down complete
+2025-10-30 18:41:28.716 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 18:41:28.746 -03:00 [INF] Shut down complete
+2025-10-30 19:04:13.787 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 19:04:13.817 -03:00 [INF] Shut down complete
+2025-10-30 19:04:31.179 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 19:04:31.208 -03:00 [INF] Shut down complete
+2025-10-30 19:04:44.542 -03:00 [FTL] Host terminated unexpectedly
+Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.ThrowHostAborted()
+   at Microsoft.Extensions.Hosting.HostFactoryResolver.HostingListener.OnNext(KeyValuePair`2 value)
+   at System.Diagnostics.DiagnosticListener.Write(String name, Object value)
+   at Microsoft.Extensions.Hosting.HostBuilder.ResolveHost(IServiceProvider serviceProvider, DiagnosticListener diagnosticListener)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api\Program.cs:line 108
+2025-10-30 19:04:44.573 -03:00 [INF] Shut down complete
+2025-10-30 19:13:14.631 -03:00 [INF] Executed DbCommand (39ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 19:13:14.672 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-10-30 19:13:14.731 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 19:13:14.787 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-10-30 19:13:14.791 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-10-30 19:13:14.801 -03:00 [INF] No migrations were applied. The database is already up to date.
+2025-10-30 19:13:14.818 -03:00 [INF] User profile is available. Using 'C:\Users\Gaabriel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-10-30 19:13:14.872 -03:00 [INF] Now listening on: http://localhost:5269
+2025-10-30 19:13:14.874 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-10-30 19:13:14.876 -03:00 [INF] Hosting environment: Development
+2025-10-30 19:13:14.876 -03:00 [INF] Content root path: C:\Users\Gaabriel\Documents\PROJETOS\CSharp\ToDoListApp\backend\ToDoList.Api
+2025-10-30 19:13:22.219 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:13:22.234 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-10-30 19:13:22.252 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:22.259 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - 204 null null 42.2472ms
+2025-10-30 19:13:22.265 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:13:22.273 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:22.389 -03:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 22:13:22'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+   at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+2025-10-30 19:13:22.407 -03:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '30/10/2025 20:18:47', Current time (UTC): '30/10/2025 22:13:22'.
+2025-10-30 19:13:22.424 -03:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-10-30 19:13:22.434 -03:00 [INF] AuthenticationScheme: Bearer was challenged.
+2025-10-30 19:13:22.436 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5269/api/ToDoItems - 401 0 null 171.7849ms
+2025-10-30 19:13:25.580 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - null null
+2025-10-30 19:13:25.583 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:25.584 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - 204 null null 4.0529ms
+2025-10-30 19:13:25.586 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/login - application/json 56
+2025-10-30 19:13:25.589 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:25.594 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:25.618 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ToDoList.Api.Models.LoginModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:13:25.956 -03:00 [INF] Executed DbCommand (14ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:13:26.917 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/login - application/json 56
+2025-10-30 19:13:26.920 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:26.922 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:26.923 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ToDoList.Api.Models.LoginModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:13:26.972 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:13:27.983 -03:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2025-10-30 19:13:27.988 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api) in 2366.7588ms
+2025-10-30 19:13:27.991 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:27.997 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/login - 401 null text/plain; charset=utf-8 2410.3289ms
+2025-10-30 19:13:28.978 -03:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2025-10-30 19:13:28.980 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api) in 2055.399ms
+2025-10-30 19:13:28.982 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:28.983 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/login - 401 null text/plain; charset=utf-8 2065.955ms
+2025-10-30 19:13:31.304 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - null null
+2025-10-30 19:13:31.306 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:31.308 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - 204 null null 3.9476ms
+2025-10-30 19:13:31.311 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/login - application/json 56
+2025-10-30 19:13:31.314 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:31.314 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:31.315 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ToDoList.Api.Models.LoginModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:13:31.332 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:13:33.337 -03:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2025-10-30 19:13:33.339 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api) in 2021.9345ms
+2025-10-30 19:13:33.340 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:33.341 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/login - 401 null text/plain; charset=utf-8 2030.1397ms
+2025-10-30 19:13:38.721 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - null null
+2025-10-30 19:13:38.723 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:38.725 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - 204 null null 4.195ms
+2025-10-30 19:13:38.728 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/login - application/json 53
+2025-10-30 19:13:38.730 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:38.731 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:38.732 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ToDoList.Api.Models.LoginModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:13:38.736 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:13:40.751 -03:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'System.String'.
+2025-10-30 19:13:40.753 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api) in 2019.5736ms
+2025-10-30 19:13:40.755 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:13:40.756 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/login - 401 null text/plain; charset=utf-8 2028.2166ms
+2025-10-30 19:13:56.236 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/register - null null
+2025-10-30 19:13:56.239 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:56.240 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/register - 204 null null 3.9694ms
+2025-10-30 19:13:56.243 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/register - application/json 107
+2025-10-30 19:13:56.244 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:13:56.245 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Register (ToDoList.Api)'
+2025-10-30 19:13:56.250 -03:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(ToDoList.Api.Models.RegisterModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:13:56.326 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+2025-10-30 19:13:56.332 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:13:56.460 -03:00 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?', @p1='?' (DbType = Int32), @p2='?', @p3='?', @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?', @p8='?', @p9='?', @p10='?', @p11='?' (DbType = Boolean), @p12='?', @p13='?' (DbType = Boolean), @p14='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14);
+2025-10-30 19:13:56.470 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-10-30 19:13:56.475 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Register (ToDoList.Api) in 223.3815ms
+2025-10-30 19:13:56.476 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Register (ToDoList.Api)'
+2025-10-30 19:13:56.477 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/register - 200 null application/json; charset=utf-8 234.5401ms
+2025-10-30 19:14:00.720 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - null null
+2025-10-30 19:14:00.724 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:00.725 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/Auth/login - 204 null null 4.3167ms
+2025-10-30 19:14:00.727 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/Auth/login - application/json 54
+2025-10-30 19:14:00.729 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:00.730 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:14:00.730 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(ToDoList.Api.Models.LoginModel) on controller ToDoList.Api.Controllers.AuthController (ToDoList.Api).
+2025-10-30 19:14:00.734 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedEmail_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedEmail" = @__normalizedEmail_0
+LIMIT 2
+2025-10-30 19:14:00.845 -03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__user_Id_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ClaimType", a."ClaimValue", a."UserId"
+FROM "AspNetUserClaims" AS a
+WHERE a."UserId" = @__user_Id_0
+2025-10-30 19:14:00.874 -03:00 [INF] Executed DbCommand (4ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Name"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetRoles" AS a0 ON a."RoleId" = a0."Id"
+WHERE a."UserId" = @__userId_0
+2025-10-30 19:14:00.886 -03:00 [INF] AuthenticationScheme: Identity.Application signed in.
+2025-10-30 19:14:00.896 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`2[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-10-30 19:14:00.900 -03:00 [INF] Executed action ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api) in 168.2036ms
+2025-10-30 19:14:00.901 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.AuthController.Login (ToDoList.Api)'
+2025-10-30 19:14:00.902 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/Auth/login - 200 null application/json; charset=utf-8 175.2202ms
+2025-10-30 19:14:00.928 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:14:00.931 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:00.933 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - 204 null null 4.9395ms
+2025-10-30 19:14:00.938 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:14:00.942 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:00.962 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api)'
+2025-10-30 19:14:00.969 -03:00 [INF] Route matched with {action = "GetToDoItems", controller = "ToDoItems"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[ToDoList.Api.Models.ToDoItem]]] GetToDoItems() on controller ToDoList.Api.Controllers.ToDoItemsController (ToDoList.Api).
+2025-10-30 19:14:00.989 -03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."Id", t."Category", t."CreatedAt", t."Description", t."DueDateTime", t."IsComplete", t."Priority", t."Title", t."UserId"
+FROM "ToDoItems" AS t
+WHERE t."UserId" = @__userId_0
+2025-10-30 19:14:00.995 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[ToDoList.Api.Models.ToDoItem, ToDoList.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-10-30 19:14:01.018 -03:00 [INF] Executed action ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api) in 46.9452ms
+2025-10-30 19:14:01.020 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api)'
+2025-10-30 19:14:01.021 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5269/api/ToDoItems - 200 null application/json; charset=utf-8 82.84ms
+2025-10-30 19:14:47.419 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:14:47.422 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:47.423 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5269/api/ToDoItems - 204 null null 3.4086ms
+2025-10-30 19:14:47.426 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5269/api/ToDoItems - application/json 137
+2025-10-30 19:14:47.428 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:47.431 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.ToDoItemsController.Create (ToDoList.Api)'
+2025-10-30 19:14:47.436 -03:00 [INF] Route matched with {action = "Create", controller = "ToDoItems"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[ToDoList.Api.Models.Dtos.ToDoItemDto]] Create(ToDoList.Api.Models.Dtos.CreateToDoItemDto) on controller ToDoList.Api.Controllers.ToDoItemsController (ToDoList.Api).
+2025-10-30 19:14:47.522 -03:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?', @p1='?' (DbType = DateTime), @p2='?', @p3='?' (DbType = DateTime), @p4='?' (DbType = Boolean), @p5='?', @p6='?', @p7='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "ToDoItems" ("Category", "CreatedAt", "Description", "DueDateTime", "IsComplete", "Priority", "Title", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7)
+RETURNING "Id";
+2025-10-30 19:14:47.551 -03:00 [INF] New task created. TaskId: 1, UserId: 58ba6d8a-67ec-4467-98c2-fb8b658e9332
+2025-10-30 19:14:47.558 -03:00 [INF] Executing CreatedAtActionResult, writing value of type 'ToDoList.Api.Models.Dtos.ToDoItemDto'.
+2025-10-30 19:14:47.593 -03:00 [INF] Executed action ToDoList.Api.Controllers.ToDoItemsController.Create (ToDoList.Api) in 154.0175ms
+2025-10-30 19:14:47.594 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.ToDoItemsController.Create (ToDoList.Api)'
+2025-10-30 19:14:47.595 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5269/api/ToDoItems - 201 null application/json; charset=utf-8 169.7251ms
+2025-10-30 19:14:47.606 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5269/api/ToDoItems - null null
+2025-10-30 19:14:47.616 -03:00 [INF] CORS policy execution successful.
+2025-10-30 19:14:47.618 -03:00 [INF] Executing endpoint 'ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api)'
+2025-10-30 19:14:47.620 -03:00 [INF] Route matched with {action = "GetToDoItems", controller = "ToDoItems"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[ToDoList.Api.Models.ToDoItem]]] GetToDoItems() on controller ToDoList.Api.Controllers.ToDoItemsController (ToDoList.Api).
+2025-10-30 19:14:47.625 -03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__userId_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."Id", t."Category", t."CreatedAt", t."Description", t."DueDateTime", t."IsComplete", t."Priority", t."Title", t."UserId"
+FROM "ToDoItems" AS t
+WHERE t."UserId" = @__userId_0
+2025-10-30 19:14:47.632 -03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[ToDoList.Api.Models.ToDoItem, ToDoList.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-10-30 19:14:47.635 -03:00 [INF] Executed action ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api) in 13.2038ms
+2025-10-30 19:14:47.636 -03:00 [INF] Executed endpoint 'ToDoList.Api.Controllers.ToDoItemsController.GetToDoItems (ToDoList.Api)'
+2025-10-30 19:14:47.638 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5269/api/ToDoItems - 200 null application/json; charset=utf-8 32.2123ms
